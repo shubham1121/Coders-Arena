@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "594706615300",
+    "project_id": "coder-s-arena-b987f",
+    "storage_bucket": "coder-s-arena-b987f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594706615300:android:c33299729d61162ea17951",
+        "android_client_info": {
+          "package_name": "com.example.coders_arena"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594706615300-c060rfq74nae3hrtqqivq35ddr9kme9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo_gez8yJmkZUOZZt-sHNhNB8okhYN3K0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "594706615300-c060rfq74nae3hrtqqivq35ddr9kme9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
