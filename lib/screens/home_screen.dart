@@ -1,5 +1,8 @@
 import 'package:coders_arena/services/firebase_auth.dart';
+import 'package:coders_arena/utils/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,18 +13,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return SafeArea(
-      child: Scaffold(
+      child: isLoading ? Loading(false) :
+      Scaffold(
         body: Center(
           child: Column(
             children: [
-              const Text('Home Screen'),
+              Text('${user.displayName}'),
+              Text('${user.email}'),
               IconButton(
                 onPressed: () {
                   setState(() {
-                    _authService.logout();
+                    isLoading = true;
+                    _authService.logout(user).whenComplete(() {
+                      setState(() {
+                        isLoading=false;
+                      });
+                    });
                   });
                 },
                 icon: const Icon(Icons.logout),

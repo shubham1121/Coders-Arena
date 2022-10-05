@@ -65,22 +65,28 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   authenticateAndLogin(context) async {
-    setState(() {
-      isLoading = true;
-    });
-    dynamic result =
-    await _authService.loginUser(userEmail.text, userPassword.text);
-    if (result != 'valid') {
+    if(_loginFormKey.currentState!.validate()){
       setState(() {
-        isLoading = false;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result.toString()),
-          ),
-        );
+        isLoading = true;
       });
+      dynamic result =
+          await _authService.loginUser(userEmail.text, userPassword.text);
+      debugPrint('Printing from authentication screen : $result');
+      if (result != 'valid') {
+        debugPrint('result here');
+        setState(() {
+          isLoading = false;
+          debugPrint('is loading false here');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(result.toString()),
+            ),
+          );
+        });
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +321,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 ),
 
                                 ElevatedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    setState(() {
+                                      AuthService().signInWithGoogle();
+                                    });
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 20,
                                     backgroundColor: Colors.white,
@@ -650,7 +660,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                   height: displayHeight(context) * 0.02,
                                 ),
                                 ElevatedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    setState(() {
+                                      AuthService().signInWithGoogle();
+                                    });
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 20,
                                     foregroundColor: Colors.grey,
