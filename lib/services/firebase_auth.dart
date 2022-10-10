@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth ;
+
+  AuthService(this._auth);
 
   // Stream of user to get the current active/inactive details
 
-  Stream<User?> get user {
+  Stream<User?> get authStateChange {
     return _auth.authStateChanges();
   }
 
@@ -15,27 +17,21 @@ class AuthService {
 
   Future signUpUser(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
+      UserCredential? userCredential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      User? user = result.user;
-      if (user != null) {
-        debugPrint('${user.uid}signUp user');
-        // await DatabaseService(user.uid)
-        //     .updateUserData(name, contact, profession, isHomeOwner, email, countRoommatePost, belongsTo);
-      }
-      return user;
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
-      return null;
+      return e;
     }
   }
 
   // Login a Existing User
 
-  Future loginUser(String email, String password) async {
+  Future<dynamic> loginUser(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return 'valid';
+      UserCredential? userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       return e.message;

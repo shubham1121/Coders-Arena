@@ -12,18 +12,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AuthService _authService = AuthService();
+  final AuthService _authService = AuthService(FirebaseAuth.instance);
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<User?>(context);
     return SafeArea(
       child: isLoading ? Loading(false) :
       Scaffold(
         body: Center(
           child: Column(
             children: [
-              Text('${user.displayName}'),
+              Text('${user!.displayName}'),
               Text('${user.email}'),
               IconButton(
                 onPressed: () {

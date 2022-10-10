@@ -1,5 +1,11 @@
+import 'package:coders_arena/controller/authentication_screen_controller.dart';
+import 'package:coders_arena/controller/verify_email_screen_controller.dart';
 import 'package:coders_arena/services/firebase_auth.dart';
+import 'package:coders_arena/services/firebase_user_service.dart';
 import 'package:coders_arena/utils/wrapper.dart';
+import 'package:coders_arena/view/screens/authentication_screen.dart';
+import 'package:coders_arena/view/screens/home_screen.dart';
+import 'package:coders_arena/view/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,12 +32,35 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<User?>.value(
-            value: AuthService().user, initialData: null),
+
+        // Auth Providers
+        ChangeNotifierProvider(
+          create: (context) => AuthNotifier(),
+        ),
+        Provider<AuthService>(
+            create: (_) => AuthService(FirebaseAuth.instance)),
+        StreamProvider(
+          create: (context) => context.read<AuthService>().authStateChange,
+          initialData: null,
+        ),
+
+        // Screen Controller Providers
+        ChangeNotifierProvider(
+          create: (context) => AuthScreenController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VerifyEmailScreenController(),
+        ),
+
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'Flutter Demo',
-        home: Wrapper(),
+          routes: {
+            '/AppRoot': (context) => const AppRoot(),
+            '/authScreen': (context) => const AuthenticationScreen(),
+            '/homeScreen': (context) => const HomeScreen(),
+          },
+        home: const SplashScreen(),
       ),
     );
   }
