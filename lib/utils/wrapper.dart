@@ -1,4 +1,5 @@
-import 'package:coders_arena/services/firebase_user_service.dart';
+import 'package:coders_arena/controller/user_controller.dart';
+import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
 import 'package:coders_arena/view/screens/authentication_screen.dart';
 import 'package:coders_arena/view/screens/home_screen.dart';
 import 'package:coders_arena/view/screens/verify_email_screen.dart';
@@ -13,12 +14,15 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AuthNotifier>(
       builder: (context, notifier, child) {
-        return notifier.user != null ? notifier.user!.emailVerified ? const HomeScreen() : const VerifyEmailPage() : const Wrapper();
+        return notifier.user != null
+            ? notifier.user!.emailVerified
+                ? const HomeScreen()
+                : const VerifyEmailPage()
+            : const Wrapper();
       },
     );
   }
 }
-
 
 class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -30,11 +34,14 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User?>();
+    final firebaseUser = Provider.of<User?>(context);
     if (firebaseUser != null) {
-      return firebaseUser.emailVerified ? const HomeScreen() : const VerifyEmailPage();
+      return firebaseUser.emailVerified
+          ? const HomeScreen()
+          : const VerifyEmailPage();
     } else {
       return const AuthenticationScreen();
     }
   }
 }
+

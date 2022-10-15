@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 const loginSignupLogo = 'assets/login_signup_image.jpg';
 
 const googleLogo = 'assets/google_logo.png';

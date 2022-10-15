@@ -1,14 +1,17 @@
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
+import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
-import 'package:coders_arena/services/firebase_auth.dart';
+import 'package:coders_arena/services/firebase_services/firebase_auth.dart'
+    as firebase;
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:coders_arena/model/user_model.dart' as user;
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
@@ -21,7 +24,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPassword = TextEditingController();
   TextEditingController userFullName = TextEditingController();
-  final AuthService _authService = AuthService(FirebaseAuth.instance);
+  final firebase.AuthService _authService =
+      firebase.AuthService(FirebaseAuth.instance);
   final _loginFormKey = GlobalKey<FormState>();
   final _signUpFormKey = GlobalKey<FormState>();
   @override
@@ -207,7 +211,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                             suffixIcon: IconButton(
                                               onPressed: () {
-                                                controller.changeVisibilityOfPassword();
+                                                controller
+                                                    .changeVisibilityOfPassword();
                                               },
                                               icon: Icon(
                                                 controller.isPasswordVisible
@@ -251,33 +256,41 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                         .authLoginSignupStatus ==
                                                     AuthLoginSignupStatus
                                                         .notLoading) {
-                                              final navigator = Navigator.of(context);
+                                              final navigator =
+                                                  Navigator.of(context);
                                               final sms =
                                                   ScaffoldMessenger.of(context);
+                                              final userController =
+                                                  Provider.of<UserController>(
+                                                      context,
+                                                      listen: false);
                                               controller.startLogin();
                                               dynamic loginResponse =
                                                   await _authService.loginUser(
-                                                      userEmail.text,
-                                                      userPassword.text);
-                                              controller.stopLogin();
-                                              debugPrint('Came here from login form');
-                                              if (loginResponse.runtimeType == UserCredential) {
-                                                navigator.pushReplacementNamed('/AppRoot');
+                                                      userEmail.text.trim(),
+                                                      userPassword.text.trim());
+                                              debugPrint(
+                                                  'Came here from login form');
+                                              if (loginResponse.runtimeType ==
+                                                  UserCredential) {
+                                                await userController.setUser(
+                                                    loginResponse.user.uid);
+                                                controller.stopLogin();
+                                                navigator.pushReplacementNamed(
+                                                    '/AppRoot');
+                                              } else {
+                                                controller.stopLogin();
+                                                sms.showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(loginResponse
+                                                        .toString()),
+                                                  ),
+                                                );
                                               }
-                                              else
-                                                {
-                                                  sms.showSnackBar(
-                                                    SnackBar(
-                                                      content:
-                                                      Text(loginResponse.toString()),
-                                                    ),
-                                                  );
-                                                }
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  darkBlueColor,
+                                              backgroundColor: darkBlueColor,
                                               elevation: 20,
                                               minimumSize: Size(
                                                   displayWidth(context) * 1,
@@ -325,10 +338,55 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           height: displayHeight(context) * 0.02,
                                         ),
                                         ElevatedButton.icon(
-                                          onPressed: () {
-                                            setState(() {
-                                              _authService.signInWithGoogle();
-                                            });
+                                          onPressed: () async {
+                                            final navigator =
+                                                Navigator.of(context);
+                                            final sms =
+                                                ScaffoldMessenger.of(context);
+                                            final userController =
+                                                Provider.of<UserController>(
+                                                    context,
+                                                    listen: false);
+                                            dynamic signInResponse =
+                                                await _authService
+                                                    .signInWithGoogle();
+                                            final googleUser =
+                                                signInResponse.user;
+                                            final bool isNewUser =
+                                                signInResponse
+                                                    .additionalUserInfo
+                                                    .isNewUser;
+                                            debugPrint(
+                                                signInResponse.toString());
+                                            if (signInResponse.runtimeType ==
+                                                UserCredential) {
+                                              if (isNewUser) {
+                                                await userController.createUser(
+                                                    user.User(
+                                                        name: googleUser
+                                                            .displayName
+                                                            .toString()
+                                                            .toLowerCase(),
+                                                        dp: '',
+                                                        email: googleUser.email,
+                                                        followers: [],
+                                                        userId: googleUser.uid,
+                                                        about: '',
+                                                        myPosts: [],
+                                                        intrests: [],
+                                                        birthday: '',
+                                                        following: []));
+                                              }
+                                              navigator.pushReplacementNamed(
+                                                  '/AppRoot');
+                                            } else {
+                                              sms.showSnackBar(
+                                                SnackBar(
+                                                  content:
+                                                      Text('$signInResponse'),
+                                                ),
+                                              );
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
                                             elevation: 20,
@@ -375,7 +433,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                controller.changeLoginFormStatus();
+                                                controller
+                                                    .changeLoginFormStatus();
                                               },
                                               child: Text(
                                                 'Signup',
@@ -605,7 +664,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                             suffixIcon: IconButton(
                                               onPressed: () {
-                                                controller.changeVisibilityOfPassword();
+                                                controller
+                                                    .changeVisibilityOfPassword();
                                               },
                                               icon: Icon(
                                                 controller.isPasswordVisible
@@ -649,33 +709,53 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                         .authLoginSignupStatus ==
                                                     AuthLoginSignupStatus
                                                         .notLoading) {
-                                              final navigator = Navigator.of(context);
+                                              final navigator =
+                                                  Navigator.of(context);
                                               final sms =
                                                   ScaffoldMessenger.of(context);
+                                              final userController =
+                                                  Provider.of<UserController>(
+                                                      context,
+                                                      listen: false);
                                               controller.startSigningUp();
                                               dynamic signUpResponse =
                                                   await _authService.signUpUser(
-                                                      userEmail.text,
-                                                      userPassword.text);
+                                                      userEmail.text.trim(),
+                                                      userPassword.text.trim());
                                               controller.stopSigningUp();
-                                              debugPrint('Came here from signup');
-                                              if (signUpResponse.runtimeType == UserCredential) {
-                                                controller.changeLoginFormStatus();
-                                                navigator.pushReplacementNamed('/AppRoot');
+                                              debugPrint(
+                                                  'Came here from signup');
+                                              if (signUpResponse.runtimeType ==
+                                                  UserCredential) {
+                                                await userController.createUser(
+                                                    user.User(
+                                                        name: userFullName.text.trim().toLowerCase(),
+                                                        dp: '',
+                                                        email: userEmail.text.trim(),
+                                                        followers: [],
+                                                        userId: signUpResponse
+                                                            .user.uid,
+                                                        about: '',
+                                                        myPosts: [],
+                                                        intrests: [],
+                                                        birthday: '',
+                                                        following: []));
+                                                controller
+                                                    .changeLoginFormStatus();
+                                                navigator.pushReplacementNamed(
+                                                    '/AppRoot');
+                                              } else {
+                                                sms.showSnackBar(
+                                                  SnackBar(
+                                                    content:
+                                                        Text('$signUpResponse'),
+                                                  ),
+                                                );
                                               }
-                                              else
-                                                {
-                                                  sms.showSnackBar(
-                                                    SnackBar(
-                                                      content: Text('$signUpResponse'),
-                                                    ),
-                                                  );
-                                                }
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  darkBlueColor,
+                                              backgroundColor: darkBlueColor,
                                               elevation: 20,
                                               minimumSize: Size(
                                                   displayWidth(context) * 1,
@@ -723,10 +803,48 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           height: displayHeight(context) * 0.02,
                                         ),
                                         ElevatedButton.icon(
-                                          onPressed: () {
-                                            setState(() {
-                                              _authService.signInWithGoogle();
-                                            });
+                                          onPressed: () async {
+                                            final navigator =
+                                                Navigator.of(context);
+                                            final sms =
+                                                ScaffoldMessenger.of(context);
+                                            final userController =
+                                                Provider.of<UserController>(
+                                                    context,
+                                                    listen: false);
+                                            dynamic signInResponse =
+                                                await _authService
+                                                    .signInWithGoogle();
+                                            final googleUser =
+                                                signInResponse.user;
+                                            // debugPrint(googleUser.email.toString());
+                                            if (signInResponse.runtimeType ==
+                                                UserCredential) {
+                                              await userController.createUser(
+                                                user.User(
+                                                    name: googleUser.displayName
+                                                        .toString()
+                                                        .toLowerCase(),
+                                                    dp: '',
+                                                    email: googleUser.email,
+                                                    followers: [],
+                                                    userId: googleUser.uid,
+                                                    about: '',
+                                                    myPosts: [],
+                                                    intrests: [],
+                                                    birthday: '',
+                                                    following: []),
+                                              );
+                                              navigator.pushReplacementNamed(
+                                                  '/AppRoot');
+                                            } else {
+                                              sms.showSnackBar(
+                                                SnackBar(
+                                                  content:
+                                                      Text('$signInResponse'),
+                                                ),
+                                              );
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
                                             elevation: 20,
@@ -773,7 +891,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                controller.changeLoginFormStatus();
+                                                controller
+                                                    .changeLoginFormStatus();
                                               },
                                               child: Text(
                                                 'Login',

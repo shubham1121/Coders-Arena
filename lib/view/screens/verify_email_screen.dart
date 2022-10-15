@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
-import 'package:coders_arena/services/firebase_auth.dart';
+import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/view/common_ui/custom_app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';

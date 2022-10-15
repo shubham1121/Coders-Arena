@@ -1,7 +1,8 @@
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
+import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
-import 'package:coders_arena/services/firebase_auth.dart';
-import 'package:coders_arena/services/firebase_user_service.dart';
+import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
+import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
 import 'package:coders_arena/utils/wrapper.dart';
 import 'package:coders_arena/view/screens/authentication_screen.dart';
 import 'package:coders_arena/view/screens/home_screen.dart';
@@ -10,10 +11,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -32,7 +35,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-
         // Auth Providers
         ChangeNotifierProvider(
           create: (context) => AuthNotifier(),
@@ -51,16 +53,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => VerifyEmailScreenController(),
         ),
-
+        ChangeNotifierProvider(
+          create: (context) => UserController(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-          routes: {
-            '/AppRoot': (context) => const AppRoot(),
-            '/authScreen': (context) => const AuthenticationScreen(),
-            '/homeScreen': (context) => const HomeScreen(),
-          },
-        home: const SplashScreen(),
+        routes: {
+          '/AppRoot': (context) => const AppRoot(),
+          '/authScreen': (context) => const AuthenticationScreen(),
+          '/homeScreen': (context) => const HomeScreen(),
+        },
+        home: const AppRoot(),
       ),
     );
   }
