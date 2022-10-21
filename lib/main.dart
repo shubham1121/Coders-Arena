@@ -4,9 +4,8 @@ import 'package:coders_arena/controller/verify_email_screen_controller.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
 import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
 import 'package:coders_arena/utils/wrapper.dart';
-import 'package:coders_arena/view/screens/authentication_screen.dart';
-import 'package:coders_arena/view/screens/home_screen.dart';
-import 'package:coders_arena/view/screens/splash_screen.dart';
+import 'package:coders_arena/view/screens/authentication/authentication_screen.dart';
+import 'package:coders_arena/view/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -64,7 +63,7 @@ class MyApp extends StatelessWidget {
           '/authScreen': (context) => const AuthenticationScreen(),
           '/homeScreen': (context) => const HomeScreen(),
         },
-        home: const AppRoot(),
+        home: const HomeScreen(),
       ),
     );
   }

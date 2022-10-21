@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
-      backgroundColor: darkBlueColor,
+      backgroundColor: blackShadeColor,
       body: Center(
         child: Image.asset(splashScreenGif),
       ),

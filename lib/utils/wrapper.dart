@@ -1,8 +1,8 @@
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
-import 'package:coders_arena/view/screens/authentication_screen.dart';
-import 'package:coders_arena/view/screens/home_screen.dart';
-import 'package:coders_arena/view/screens/verify_email_screen.dart';
+import 'package:coders_arena/view/screens/authentication/authentication_screen.dart';
+import 'package:coders_arena/view/screens/authentication/verify_email_screen.dart';
+import 'package:coders_arena/view/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -7,6 +7,7 @@ import 'package:coders_arena/services/firebase_services/firebase_auth.dart'
     as firebase;
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
+import 'package:coders_arena/utils/space_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,6 +47,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final spaceProvider = SpaceProvider();
     return Material(
       child: SafeArea(
         child: Consumer<AuthScreenController>(
@@ -63,9 +65,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             child: Column(
                               // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: displayHeight(context) * 0.06,
-                                ),
+                                spaceProvider.getWidthSpace(context, 0.06),
                                 Image.asset(
                                   "assets/login_signup_image.jpg",
                                   fit: BoxFit.contain,
@@ -121,9 +121,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: displayHeight(context) * 0.02,
-                                ),
+                                spaceProvider.getHeightSpace(context, 0.02),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 0),
@@ -138,13 +136,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             fontSize:
                                                 displayWidth(context) * 0.05,
                                             fontWeight: FontWeight.w300,
-                                            color: darkBlueColor,
+                                            color: blackShadeColor,
                                           ),
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           autofocus: false,
                                           controller: userEmail,
-                                          cursorColor: darkBlueColor,
+                                          cursorColor: blackShadeColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Email can\t be empty!';
@@ -155,7 +153,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.email,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                             enabledBorder:
                                                 const UnderlineInputBorder(
@@ -166,7 +164,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             hintText: 'Enter Email',
@@ -181,9 +179,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.03,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.03),
                                         TextFormField(
                                           style: TextStyle(
                                             fontSize:
@@ -194,7 +190,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           obscureText:
                                               !controller.isPasswordVisible,
                                           controller: userPassword,
-                                          cursorColor: darkBlueColor,
+                                          cursorColor: blackShadeColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Password should be of min length 6';
@@ -207,7 +203,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.lock_person,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                             suffixIcon: IconButton(
                                               onPressed: () {
@@ -218,7 +214,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 controller.isPasswordVisible
                                                     ? Icons.visibility
                                                     : Icons.visibility_off,
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             enabledBorder:
@@ -230,7 +226,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             hintText: 'Enter Password',
@@ -245,9 +241,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.04,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.04),
                                         ElevatedButton(
                                           onPressed: () async {
                                             if (_loginFormKey.currentState!
@@ -290,7 +284,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: darkBlueColor,
+                                              backgroundColor: blackShadeColor,
                                               elevation: 20,
                                               minimumSize: Size(
                                                   displayWidth(context) * 1,
@@ -304,9 +298,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.02,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.02),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 0, horizontal: 50),
@@ -334,9 +326,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.02,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.02),
                                         ElevatedButton.icon(
                                           onPressed: () async {
                                             final navigator =
@@ -410,14 +400,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             style: TextStyle(
                                               fontSize:
                                                   displayWidth(context) * 0.05,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height:
-                                              displayHeight(context) * 0.025,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.025),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -467,9 +454,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             child: Column(
                               // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: displayHeight(context) * 0.06,
-                                ),
+                                spaceProvider.getHeightSpace(context, 0.06),
                                 Image.asset(
                                   "assets/login_signup_image.jpg",
                                   fit: BoxFit.contain,
@@ -525,9 +510,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: displayHeight(context) * 0.02,
-                                ),
+                                spaceProvider.getHeightSpace(context, 0.02),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 0),
@@ -542,11 +525,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             fontSize:
                                                 displayWidth(context) * 0.05,
                                             fontWeight: FontWeight.w300,
-                                            color: darkBlueColor,
+                                            color: blackShadeColor,
                                           ),
                                           autofocus: false,
                                           controller: userFullName,
-                                          cursorColor: darkBlueColor,
+                                          cursorColor: blackShadeColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Name can\t be empty!';
@@ -557,7 +540,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.person,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                             enabledBorder:
                                                 const UnderlineInputBorder(
@@ -568,7 +551,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             hintText: 'Enter Full Name',
@@ -583,21 +566,19 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.03,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.03),
                                         TextFormField(
                                           style: TextStyle(
                                             fontSize:
                                                 displayWidth(context) * 0.05,
                                             fontWeight: FontWeight.w300,
-                                            color: darkBlueColor,
+                                            color: blackShadeColor,
                                           ),
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           autofocus: false,
                                           controller: userEmail,
-                                          cursorColor: darkBlueColor,
+                                          cursorColor: blackShadeColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Email can\t be empty!';
@@ -608,7 +589,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.email,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                             enabledBorder:
                                                 const UnderlineInputBorder(
@@ -619,7 +600,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             hintText: 'Enter Email',
@@ -634,9 +615,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.03,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.03),
                                         TextFormField(
                                           style: TextStyle(
                                             fontSize:
@@ -647,7 +626,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           obscureText:
                                               !controller.isPasswordVisible,
                                           controller: userPassword,
-                                          cursorColor: darkBlueColor,
+                                          cursorColor: blackShadeColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Password should be of min length 6';
@@ -660,7 +639,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.lock_person,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                             suffixIcon: IconButton(
                                               onPressed: () {
@@ -671,7 +650,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 controller.isPasswordVisible
                                                     ? Icons.visibility
                                                     : Icons.visibility_off,
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             enabledBorder:
@@ -683,7 +662,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: darkBlueColor,
+                                                color: blackShadeColor,
                                               ),
                                             ),
                                             hintText: 'Enter Password',
@@ -698,9 +677,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.04,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.04),
                                         ElevatedButton(
                                           onPressed: () async {
                                             if (_signUpFormKey.currentState!
@@ -729,9 +706,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                   UserCredential) {
                                                 await userController.createUser(
                                                     user.User(
-                                                        name: userFullName.text.trim().toLowerCase(),
+                                                        name: userFullName.text
+                                                            .trim()
+                                                            .toLowerCase(),
                                                         dp: '',
-                                                        email: userEmail.text.trim(),
+                                                        email: userEmail.text
+                                                            .trim(),
                                                         followers: [],
                                                         userId: signUpResponse
                                                             .user.uid,
@@ -755,7 +735,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: darkBlueColor,
+                                              backgroundColor: blackShadeColor,
                                               elevation: 20,
                                               minimumSize: Size(
                                                   displayWidth(context) * 1,
@@ -769,9 +749,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.02,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.02),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 0, horizontal: 50),
@@ -799,9 +777,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: displayHeight(context) * 0.02,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.02),
                                         ElevatedButton.icon(
                                           onPressed: () async {
                                             final navigator =
@@ -868,14 +844,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             style: TextStyle(
                                               fontSize:
                                                   displayWidth(context) * 0.05,
-                                              color: darkBlueColor,
+                                              color: blackShadeColor,
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height:
-                                              displayHeight(context) * 0.025,
-                                        ),
+                                        spaceProvider.getHeightSpace(context, 0.025),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
