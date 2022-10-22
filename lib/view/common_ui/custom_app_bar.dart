@@ -74,8 +74,9 @@ class CustomisedAppBar extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         child: InkWell(
                           splashColor: Colors.grey.shade500,
-                          onTap: (){},
-                            child: Image.asset(googleLogo)),
+                          onTap: () {},
+                          child: Image.asset(googleLogo),
+                        ),
                       ),
                     ),
                     spaceProvider.getWidthSpace(context, 0.03),

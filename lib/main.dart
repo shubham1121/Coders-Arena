@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
           '/authScreen': (context) => const AuthenticationScreen(),
           '/homeScreen': (context) => const HomeScreen(),
         },
+        debugShowCheckedModeBanner: false,
         home: const HomeScreen(),
       ),
     );

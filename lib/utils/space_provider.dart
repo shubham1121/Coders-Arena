@@ -11,7 +11,7 @@ class SpaceProvider {
   Widget getHeightSpace (BuildContext context, double scaleFactor)
   {
     return SizedBox(
-      width: displayHeight(context)*scaleFactor,
+      height: displayHeight(context)*scaleFactor,
     );
   }
 }

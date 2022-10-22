@@ -136,13 +136,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             fontSize:
                                                 displayWidth(context) * 0.05,
                                             fontWeight: FontWeight.w300,
-                                            color: blackShadeColor,
+                                            color: darkBlueColor,
                                           ),
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           autofocus: false,
                                           controller: userEmail,
-                                          cursorColor: blackShadeColor,
+                                          cursorColor: darkBlueColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Email can\t be empty!';
@@ -153,7 +153,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.email,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                             enabledBorder:
                                                 const UnderlineInputBorder(
@@ -164,7 +164,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             hintText: 'Enter Email',
@@ -190,7 +190,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           obscureText:
                                               !controller.isPasswordVisible,
                                           controller: userPassword,
-                                          cursorColor: blackShadeColor,
+                                          cursorColor: darkBlueColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Password should be of min length 6';
@@ -203,7 +203,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.lock_person,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                             suffixIcon: IconButton(
                                               onPressed: () {
@@ -214,7 +214,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 controller.isPasswordVisible
                                                     ? Icons.visibility
                                                     : Icons.visibility_off,
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             enabledBorder:
@@ -226,7 +226,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             hintText: 'Enter Password',
@@ -284,7 +284,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: blackShadeColor,
+                                              backgroundColor: darkBlueColor,
                                               elevation: 20,
                                               minimumSize: Size(
                                                   displayWidth(context) * 1,
@@ -400,7 +400,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             style: TextStyle(
                                               fontSize:
                                                   displayWidth(context) * 0.05,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                           ),
                                         ),
@@ -525,11 +525,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             fontSize:
                                                 displayWidth(context) * 0.05,
                                             fontWeight: FontWeight.w300,
-                                            color: blackShadeColor,
+                                            color: darkBlueColor,
                                           ),
                                           autofocus: false,
                                           controller: userFullName,
-                                          cursorColor: blackShadeColor,
+                                          cursorColor: darkBlueColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Name can\t be empty!';
@@ -540,7 +540,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.person,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                             enabledBorder:
                                                 const UnderlineInputBorder(
@@ -551,7 +551,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             hintText: 'Enter Full Name',
@@ -572,13 +572,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             fontSize:
                                                 displayWidth(context) * 0.05,
                                             fontWeight: FontWeight.w300,
-                                            color: blackShadeColor,
+                                            color: darkBlueColor,
                                           ),
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           autofocus: false,
                                           controller: userEmail,
-                                          cursorColor: blackShadeColor,
+                                          cursorColor: darkBlueColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Email can\t be empty!';
@@ -589,7 +589,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.email,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                             enabledBorder:
                                                 const UnderlineInputBorder(
@@ -600,7 +600,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             hintText: 'Enter Email',
@@ -626,7 +626,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           obscureText:
                                               !controller.isPasswordVisible,
                                           controller: userPassword,
-                                          cursorColor: blackShadeColor,
+                                          cursorColor: darkBlueColor,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Password should be of min length 6';
@@ -639,7 +639,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           decoration: InputDecoration(
                                             prefixIcon: const Icon(
                                               Icons.lock_person,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                             suffixIcon: IconButton(
                                               onPressed: () {
@@ -650,7 +650,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 controller.isPasswordVisible
                                                     ? Icons.visibility
                                                     : Icons.visibility_off,
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             enabledBorder:
@@ -662,7 +662,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             focusedBorder:
                                                 const UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: blackShadeColor,
+                                                color: darkBlueColor,
                                               ),
                                             ),
                                             hintText: 'Enter Password',
@@ -735,7 +735,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: blackShadeColor,
+                                              backgroundColor: darkBlueColor,
                                               elevation: 20,
                                               minimumSize: Size(
                                                   displayWidth(context) * 1,
@@ -844,7 +844,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             style: TextStyle(
                                               fontSize:
                                                   displayWidth(context) * 0.05,
-                                              color: blackShadeColor,
+                                              color: darkBlueColor,
                                             ),
                                           ),
                                         ),

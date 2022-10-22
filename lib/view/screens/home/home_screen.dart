@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // final AuthService _authService = AuthService(FirebaseAuth.instance);
   final spaceProvider = SpaceProvider();
   bool isLoading = false;
-  int index = 2;
+  int index = 4;
   @override
   Widget build(BuildContext context) {
     // final user = Provider.of<User?>(context);
@@ -53,17 +53,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         body: screens[index],
-        backgroundColor: blackShadeColor,
+        backgroundColor: darkBlueColor,
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
             iconTheme: IconThemeData(
-                color: Colors.grey.shade200,
+                color: Colors.grey.shade300,
                 size: displayWidth(context) * 0.065),
           ),
           child: CurvedNavigationBar(
-            backgroundColor: blackShadeColor,
-            color: bottomNavBarColor,
-            buttonBackgroundColor: bottomNavBarColor,
+            backgroundColor: darkBlueColor,
+            color: lightBlueColor,
+            buttonBackgroundColor: lightBlueColor,
             items: screenIcons,
             height: displayHeight(context) * 0.07,
             animationCurve: Curves.easeOut,
