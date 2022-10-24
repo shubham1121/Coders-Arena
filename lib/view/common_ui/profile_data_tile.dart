@@ -5,15 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProfileDataTile extends StatelessWidget {
 
-  final String dataViewType;
+  // final String dataViewType;
   final String dataValue;
-  final IconData iconData;
+  final String iconName;
 
   const ProfileDataTile({
     Key? key,
-    required this.dataViewType,
+    // required this.dataViewType,
     required this.dataValue,
-    required this.iconData,
+    required this.iconName,
   }) : super(key: key);
 
 
@@ -29,20 +29,12 @@ class ProfileDataTile extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(iconData,
-                color: Colors.white,
-                size: displayWidth(context)*0.055,
+              Image.asset(
+                iconName,
+                height: displayWidth(context)*0.06,
+                width: displayWidth(context)*0.06,
               ),
-              spaceProvider.getWidthSpace(context, 0.02),
-              Text('$dataViewType :',
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: displayWidth(context)*0.040,
-                  ),
-                ),
-              ),
-              spaceProvider.getWidthSpace(context, 0.02),
+              spaceProvider.getWidthSpace(context, 0.04),
             ],
           ),
           Expanded(

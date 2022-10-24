@@ -55,6 +55,8 @@ class MyProfileScreen extends StatelessWidget {
                             child: const CustomIconTextButton(
                               buttonName: 'Edit',
                               iconData: Icons.edit_outlined,
+                              isText: false,
+                              text: '',
                             ),
                           ),
                         ),
@@ -70,6 +72,8 @@ class MyProfileScreen extends StatelessWidget {
                             child: const CustomIconTextButton(
                               buttonName: 'Bye!',
                               iconData: Icons.logout_outlined,
+                              isText: false,
+                              text: '',
                             ),
                           ),
                         ),
@@ -128,20 +132,140 @@ class MyProfileScreen extends StatelessWidget {
                 ],
               ),
               spaceProvider.getHeightSpace(context, 0.02),
-              const ProfileDataTile(
-                dataViewType: 'Email',
-                dataValue: 'devranishubham1121@gmail.com',
-                iconData: Icons.email_outlined,
+              const Padding(
+                padding:  EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child:  ProfileDataTile(
+                  dataValue: 'devranishubham1121@gmail.com',
+                  iconName: gmailIcon,
+                ),
               ),
-              const ProfileDataTile(
-                dataViewType: 'Birthday',
-                dataValue: '18th Oct',
-                iconData: Icons.cake_outlined,
+              const Padding(
+                padding:  EdgeInsets.fromLTRB(0, 0, 0, 5),
+                child:  ProfileDataTile(
+                  dataValue: '18th Oct',
+                  iconName: cakeIcon,
+                ),
               ),
-              const ProfileDataTile(
-                dataViewType: 'About',
-                dataValue: 'I am a flutter developer and a competitive programmer!',
-                iconData: Icons.person_outline,
+              const Padding(
+                padding:  EdgeInsets.fromLTRB(0, 0, 0, 5),
+                child:  ProfileDataTile(
+                  dataValue: 'I am a flutter developer and a competitive programmer!',
+                  iconName: userIcon,
+                ),
+              ),
+              spaceProvider.getHeightSpace(context, 0.06),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Material(
+                        color: Colors.grey.shade300,
+                        clipBehavior: Clip.hardEdge,
+                        elevation: 5,
+                        shadowColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: InkWell(
+                          onTap: () {},
+                          splashColor: Colors.grey.shade400,
+                          child: const CustomIconTextButton(
+                            buttonName: '',
+                            iconData: Icons.abc,
+                            isText: true,
+                            text: '24',
+                          ),
+                        ),
+                      ),
+                      spaceProvider.getHeightSpace(context, 0.01),
+                      Text('Followers',
+                        style: GoogleFonts.nunito(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: displayWidth(context)*0.04,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Material(
+                        color: Colors.grey.shade300,
+                        clipBehavior: Clip.hardEdge,
+                        elevation: 5,
+                        shadowColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: InkWell(
+                          onTap: () {},
+                          splashColor: Colors.grey.shade400,
+                          child: const CustomIconTextButton(
+                            buttonName: '',
+                            iconData: Icons.abc,
+                            isText: true,
+                            text: '04',
+                          ),
+                        ),
+                      ),
+                      spaceProvider.getHeightSpace(context, 0.01),
+                      Text('My Posts',
+                        style: GoogleFonts.nunito(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: displayWidth(context)*0.04,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Material(
+                        color: Colors.grey.shade300,
+                        clipBehavior: Clip.hardEdge,
+                        elevation: 5,
+                        shadowColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: InkWell(
+                          onTap: () {},
+                          splashColor: Colors.grey.shade400,
+                          child: const CustomIconTextButton(
+                            buttonName: '',
+                            iconData: Icons.abc,
+                            isText: true,
+                            text: '19',
+                          ),
+                        ),
+                      ),
+                      spaceProvider.getHeightSpace(context, 0.01),
+                      Text('Following',
+                        style: GoogleFonts.nunito(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: displayWidth(context)*0.04,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          spaceProvider.getHeightSpace(context, 0.17),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Made in India with \u2764.',
+                style: GoogleFonts.alegreya(
+                  color: Colors.white,
+                  fontSize: displayWidth(context)*0.04,
+                ),
               ),
             ],
           )
