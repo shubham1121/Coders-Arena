@@ -2,6 +2,7 @@ import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/space_provider.dart';
+import 'package:coders_arena/view/common_ui/bottom_modal_sheet.dart';
 import 'package:coders_arena/view/common_ui/custom_icon_text_button.dart';
 import 'package:coders_arena/view/common_ui/profile_data_tile.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class MyProfileScreen extends StatefulWidget {
 class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final bottomModalSheet = BottomModalSheet();
     final spaceProvider = SpaceProvider();
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -159,7 +161,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               context: context,
                               backgroundColor: Colors.transparent,
                               isScrollControlled: true,
-                              builder: (context) => buildSheet(),
+                              builder: (context) => bottomModalSheet.buildSheet(
+                                  context, 'Followers'),
                             );
                           },
                           splashColor: Colors.grey.shade400,
@@ -199,7 +202,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               context: context,
                               backgroundColor: Colors.transparent,
                               isScrollControlled: true,
-                              builder: (context) => buildSheet(),
+                              builder: (context) => bottomModalSheet.buildSheet(
+                                  context, 'My Posts'),
                             );
                           },
                           splashColor: Colors.grey.shade400,
@@ -237,7 +241,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               context: context,
                               backgroundColor: Colors.transparent,
                               isScrollControlled: true,
-                              builder: (context) => buildSheet(),
+                              builder: (context) => bottomModalSheet.buildSheet(
+                                  context, 'Following'),
                             );
                           },
                           splashColor: Colors.grey.shade400,
@@ -304,76 +309,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           )
         ],
       ),
-    );
-  }
-
-  Widget makeDismissible({required Widget child}) => GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onTap: () => Navigator.of(context).pop(),
-    child: GestureDetector(onTap: (){},child: child,),
-  );
-
-  Widget buildSheet() {
-    return makeDismissible(
-      child: DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          minChildSize: 0.5,
-          maxChildSize: 0.8,
-          builder: (_, controller) {
-            return Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-              ),
-              padding: const EdgeInsets.all(10),
-              child: ListView(
-                controller: controller,
-                children: const [
-                  Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                        'Nulla non arcu eu nulla viverra eleifend vel ac arcu. Curabitur elementum libero in '
-                        'dui malesuada sagittis. Integer ut diam in nisi eleifend ornare non sit amet odio. '
-                        'In accumsan porttitor sem, eget vehicula felis hendrerit sed. Curabitur imperdiet et '
-                        'nisl vitae dapibus. Phasellus velit sapien, pellentesque quis nisi id, ornare venenatis sem. '
-                        'Praesent ultrices sollicitudin lacus sed suscipit. Pellentesque vitae dignissim ex. '
-                        'Nullam est libero, molestie eu velit ac, facilisis faucibus urna. Sed eget purus tincidunt, '
-                        'vulputate est sit amet, ornare mi. Sed quis felis iaculis, iaculis odio ut, condimentum lectus. '
-                        'Sed quis elementum nislDonec in maximus dolor. Nam orci sapien, porta eget mi sit amet, '
-                        'pellentesque fermentum risus. Nullam imperdiet placerat neque rhoncus viverra. Morbi felis '
-                        'dolor, iaculis et sagittis ut, malesuada at mauris. Aliquam a lobortis purus. Nunc finibus '
-                        'interdum est vitae fermentum. Suspendisse potenti. Nullam erat est, ultrices ac lectus vel, '
-                        'maximus aliquet dolor. Vestibulum sapien turpis, tempor vitae porta non, ullamcorper pulvinar '
-                        'nisl. Integer a facilisis mauris. Aenean vitae fermentum urna, et placerat nunc. Suspendisse '
-                        'sagittis urna vitae malesuada posuere. Quisque nec nibh at nisl suscipit rhoncus. '
-                        'Duis faucibus mi et felis malesuada, nec tempor lectus viverra. Maecenas ipsum ipsum, '
-                        'eleifend eget nunc sed, euismod rutrum purus.',
-                  ),
-                  Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                        'Nulla non arcu eu nulla viverra eleifend vel ac arcu. Curabitur elementum libero in '
-                        'dui malesuada sagittis. Integer ut diam in nisi eleifend ornare non sit amet odio. '
-                        'In accumsan porttitor sem, eget vehicula felis hendrerit sed. Curabitur imperdiet et '
-                        'nisl vitae dapibus. Phasellus velit sapien, pellentesque quis nisi id, ornare venenatis sem. '
-                        'Praesent ultrices sollicitudin lacus sed suscipit. Pellentesque vitae dignissim ex. '
-                        'Nullam est libero, molestie eu velit ac, facilisis faucibus urna. Sed eget purus tincidunt, '
-                        'vulputate est sit amet, ornare mi. Sed quis felis iaculis, iaculis odio ut, condimentum lectus. '
-                        'Sed quis elementum nislDonec in maximus dolor. Nam orci sapien, porta eget mi sit amet, '
-                        'pellentesque fermentum risus. Nullam imperdiet placerat neque rhoncus viverra. Morbi felis '
-                        'dolor, iaculis et sagittis ut, malesuada at mauris. Aliquam a lobortis purus. Nunc finibus '
-                        'interdum est vitae fermentum. Suspendisse potenti. Nullam erat est, ultrices ac lectus vel, '
-                        'maximus aliquet dolor. Vestibulum sapien turpis, tempor vitae porta non, ullamcorper pulvinar '
-                        'nisl. Integer a facilisis mauris. Aenean vitae fermentum urna, et placerat nunc. Suspendisse '
-                        'sagittis urna vitae malesuada posuere. Quisque nec nibh at nisl suscipit rhoncus. '
-                        'Duis faucibus mi et felis malesuada, nec tempor lectus viverra. Maecenas ipsum ipsum, '
-                        'eleifend eget nunc sed, euismod rutrum purus.',
-                  ),
-                ],
-              ),
-            );
-          }),
     );
   }
 }

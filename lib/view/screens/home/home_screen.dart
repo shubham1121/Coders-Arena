@@ -4,6 +4,7 @@ import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/screens/feed/add_post_screen.dart';
 import 'package:coders_arena/view/screens/contest/contest_screen.dart';
 import 'package:coders_arena/view/screens/feed/feed_screen.dart';
+import 'package:coders_arena/view/screens/feed/temp.dart';
 import 'package:coders_arena/view/screens/profile/my_profile_screen.dart';
 import 'package:coders_arena/view/screens/search/search_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // final AuthService _authService = AuthService(FirebaseAuth.instance);
   final spaceProvider = SpaceProvider();
   bool isLoading = false;
-  int index = 4;
+  int index = 2;
   @override
   Widget build(BuildContext context) {
     // final user = Provider.of<User?>(context);
@@ -52,7 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Scaffold(
-        body: screens[index],
+        body: const TempScreen(),
+        // screens[index],
         backgroundColor: darkBlueColor,
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
