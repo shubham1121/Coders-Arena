@@ -6,9 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TempScreen extends StatelessWidget {
+class TempScreen extends StatefulWidget {
   const TempScreen({Key? key}) : super(key: key);
 
+  @override
+  State<TempScreen> createState() => _TempScreenState();
+}
+
+class _TempScreenState extends State<TempScreen> {
+  bool isCaptionOpen = false;
   @override
   Widget build(BuildContext context) {
     final spaceProvider = SpaceProvider();
@@ -88,82 +94,92 @@ class TempScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
           child: Row(
             children: [
-              Text(
-                'Shubham Devrani ',
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: displayWidth(context) * 0.040,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Expanded(
+              isCaptionOpen
+                  ? Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Shubham Devrani ',
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: displayWidth(context) * 0.040,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  'Creating a coding environment in your college is not that easy. You have to put  efforts continuously with 100% efforts.'
+                                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously with 100% efforts.',
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: displayWidth(context) * 0.035,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Expanded(
+                      child: RichText(
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Shubham Devrani ',
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: displayWidth(context) * 0.040,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously with 100% efforts.'
+                                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously with 100% efforts.',
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: displayWidth(context) * 0.035,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+            ],
+          ),
+        ),
+        isCaptionOpen
+            ? spaceProvider.getWidthSpace(context, 0)
+            : TextButton(
+                onPressed: () {
+                  setState(() {
+                    isCaptionOpen = true;
+                  });
+                },
                 child: Text(
-                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously.',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
+                  'View More',
                   style: GoogleFonts.nunito(
                     textStyle: TextStyle(
-                      color: Colors.white,
                       fontSize: displayWidth(context) * 0.035,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        // Container(
-        //   decoration: BoxDecoration(
-        //     color: Colors.transparent,
-        //     border: Border(
-        //       top: BorderSide(
-        //         color: Colors.grey.shade800,
-        //         width: 0.8,
-        //       ),
-        //       bottom: BorderSide(
-        //         color: Colors.grey.shade800,
-        //         width: 0.8,
-        //       ),
-        //     )
-        //   ),
-        //   child: Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-        //     child: Row(
-        //       children: [
-        //         CircleAvatar(
-        //           backgroundColor: Colors.transparent,
-        //           radius: 20,
-        //           backgroundImage: const AssetImage(tempDp),
-        //           child: Container(
-        //             decoration: BoxDecoration(
-        //               borderRadius: BorderRadius.circular(50),
-        //               border: Border.all(
-        //                 color: darkBlueColor,
-        //                 width: displayWidth(context) * 0.003,
-        //               ),
-        //             ),
-        //             child: Container(
-        //               decoration: BoxDecoration(
-        //                 borderRadius:
-        //                 BorderRadius.circular(50),
-        //                 border: Border.all(
-        //                   color: Colors.white,
-        //                   width:
-        //                   displayWidth(context) * 0.003,
-        //                 ),
-        //               ),
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }
