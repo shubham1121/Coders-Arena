@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TempScreen extends StatefulWidget {
-  const TempScreen({Key? key}) : super(key: key);
+class DesignPost extends StatefulWidget {
+  const DesignPost({Key? key}) : super(key: key);
 
   @override
-  State<TempScreen> createState() => _TempScreenState();
+  State<DesignPost> createState() => _DesignPostState();
 }
 
-class _TempScreenState extends State<TempScreen> {
+class _DesignPostState extends State<DesignPost> {
   bool isCaptionOpen = false;
   @override
   Widget build(BuildContext context) {
