@@ -1,3 +1,4 @@
+import 'package:coders_arena/controller/add_post_screen_controller.dart';
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
@@ -5,6 +6,7 @@ import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
 import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
 import 'package:coders_arena/utils/wrapper.dart';
 import 'package:coders_arena/view/screens/authentication/authentication_screen.dart';
+import 'package:coders_arena/view/screens/feed/all_upload_images_view.dart';
 import 'package:coders_arena/view/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,6 @@ class MyApp extends StatelessWidget {
           create: (context) => context.read<AuthService>().authStateChange,
           initialData: null,
         ),
-
         // Screen Controller Providers
         ChangeNotifierProvider(
           create: (context) => AuthScreenController(),
@@ -55,11 +56,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => UserController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => AddPostScreenController(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         routes: {
-          '/AppRoot': (context) => const AppRoot(),
+          '/appRoot': (context) => const AppRoot(),
           '/authScreen': (context) => const AuthenticationScreen(),
           '/homeScreen': (context) => const HomeScreen(),
         },

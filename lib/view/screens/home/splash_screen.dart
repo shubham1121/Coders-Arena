@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (mounted) {
       final navigator = Navigator.of(context);
       await Future.delayed(const Duration(seconds: 6));
-      navigator.pushReplacementNamed('/AppRoot');
+      navigator.pushReplacementNamed('/appRoot');
     }
   }
 

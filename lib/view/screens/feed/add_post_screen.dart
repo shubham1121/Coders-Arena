@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:coders_arena/constants/color_constants.dart';
+import 'package:coders_arena/controller/add_post_screen_controller.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/space_provider.dart';
+import 'package:coders_arena/view/screens/feed/all_upload_images_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -19,36 +21,24 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final _postFormKey = GlobalKey<FormState>();
   final spaceProvider = SpaceProvider();
   final TextEditingController _caption = TextEditingController();
-  final ImagePicker _imagePicker = ImagePicker();
-
-  final List<File> _imagesList = [];
-
-  Future chooseImage() async {
-    final pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) {
-      return;
-    }
-    final file = File(pickedImage.path);
-    _imagesList.add(file);
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
+    final addPostScreenController = Provider.of<AddPostScreenController>(context);
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'New Post',
               style: GoogleFonts.nunito(
                 textStyle: TextStyle(
-                  fontSize: displayWidth(context) * 0.07,
-                  color: Colors.white,
-                ),
+                    fontSize: displayWidth(context) * 0.09,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
               ),
             ),
             spaceProvider.getHeightSpace(context, 0.02),
@@ -62,7 +52,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   color: Colors.white,
                 ),
                 minLines: 1,
-                maxLines: 10,
+                maxLines: 6,
                 textAlignVertical: TextAlignVertical.top,
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
@@ -70,7 +60,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey.shade700,
+                      color: Colors.grey.shade300,
                     ),
                   ),
                   focusedBorder: UnderlineInputBorder(
@@ -82,8 +72,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   labelStyle: GoogleFonts.nunito(
                     textStyle: TextStyle(
                       fontSize: displayWidth(context) * 0.055,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.grey.shade400,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey.shade200,
                     ),
                   ),
                   hintText: 'Got rank under 50 in CF div 2.',
@@ -97,113 +87,145 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
               ),
             ),
-            spaceProvider.getHeightSpace(context, 0.04),
-            _imagesList.length > 2
-                ? SizedBox(
-                    height: displayWidth(context) * 0.4,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return index == 0
-                            ? Container(
-                                height: 100,
-                                width: 100,
-                                child: Image.file(
-                                  _imagesList[index],
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : index == 1
-                                ? Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: Stack(
-                                      alignment: AlignmentDirectional.center,
-                                      children: [
-                                        Image.file(
-                                          _imagesList[index],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: Text(
+                'Images',
+                style: GoogleFonts.nunito(
+                    textStyle: TextStyle(
+                  fontSize: displayWidth(context) * 0.07,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                )),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            // Row can contain at most three boxes according to conditions
+            // Case 1 : If no image is picked ( _imageList.length == 0 ) , then only a box to add images will appear
+            // Case 2 : If only one image is picked , two boxes -> one will be the image and second will be the box to add more
+            // Case 3 : If images picked are 2 or more than 2
+            // Case 3.1 -> If there are only 2 images in the list then display three boxes
+            //          -> First and second will be image boxes and third will be the box to add more
+            // Case 3.2 -> If there are more than 2 images , display three boxes
+            //          -> First will be image box , second will be a stack with two children and third will be box to add more
+
+            // Add Images Row
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // First image box
+                  addPostScreenController.uploadImages.isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.file(
+                            addPostScreenController.uploadImages.first,
+                            height: displayHeight(context) * 0.117,
+                            width: displayHeight(context) * 0.117,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : spaceProvider.getWidthSpace(context, 0),
+                  // Horizontal space only if first image box is present
+                  addPostScreenController.uploadImages.length == 1
+                      ? spaceProvider.getWidthSpace(context, 0)
+                      : spaceProvider.getWidthSpace(context, 0),
+
+                  addPostScreenController.uploadImages.length >= 2
+                      ? spaceProvider.getWidthSpace(context, 0.066)
+                      : spaceProvider.getWidthSpace(context, 0),
+                  //
+                  addPostScreenController.uploadImages.length >= 2
+                      ? addPostScreenController.uploadImages.length == 2
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(
+                                addPostScreenController.uploadImages[1],
+                                height: displayHeight(context) * 0.117,
+                                width: displayHeight(context) * 0.117,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const AllUploadImagesView(),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(15),
+                              child: SizedBox(
+                                height: displayHeight(context) * 0.117,
+                                width: displayHeight(context) * 0.117,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Opacity(
+                                      opacity: 0.3,
+                                      child: ClipRRect(
+                                        clipBehavior: Clip.hardEdge,
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.file(
+                                          addPostScreenController.uploadImages[1],
+                                          height:
+                                              displayHeight(context) * 0.117,
+                                          width: displayHeight(context) * 0.117,
                                           fit: BoxFit.cover,
                                         ),
-                                        Positioned.fill(
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                              sigmaX: 5,
-                                              sigmaY: 5,
-                                            ),
-                                            child: Container(
-                                              color:
-                                                  Colors.black.withOpacity(0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    height: 100,
-                                    width: 100,
-                                    color: Colors.red,
-                                    child: InkWell(
-                                      onTap: () {
-                                        chooseImage();
-                                      },
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                        size: displayWidth(context) * 0.2,
                                       ),
                                     ),
-                                  );
+                                    Text(
+                                      '+${addPostScreenController.uploadImages.length - 2}',
+                                      style: GoogleFonts.nunito(
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              displayWidth(context) * 0.07,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                      : spaceProvider.getWidthSpace(context, 0),
+                  // Horizontal space only if second image box is present
+                  addPostScreenController.uploadImages.isNotEmpty
+                      ? spaceProvider.getWidthSpace(context, 0.066)
+                      : spaceProvider.getWidthSpace(context, 0),
+                  //
+                  Material(
+                    elevation: 10,
+                    clipBehavior: Clip.hardEdge,
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.grey.shade800,
+                    child: InkWell(
+                      onTap: () {
+                        addPostScreenController.chooseImage();
                       },
-                    ),
-                  )
-                : SizedBox(
-                    height: displayWidth(context) * 0.4,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
+                      child: Container(
+                        height: displayHeight(context) * 0.117,
+                        width: displayHeight(context) * 0.117,
+                        color: Colors.transparent,
+                        child: Center(
+                          child: Icon(
+                            CupertinoIcons.add,
+                            color: Colors.white,
+                            size: displayWidth(context) * 0.15,
+                          ),
+                        ),
                       ),
-                      itemCount: _imagesList.length + 1,
-                      itemBuilder: (context, index) {
-                        return index == _imagesList.length
-                            ? Container(
-                                height: 100,
-                                width: 100,
-                                color: Colors.red,
-                                child: InkWell(
-                                  onTap: () {
-                                    chooseImage();
-                                  },
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: displayWidth(context) * 0.2,
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                height: 100,
-                                width: 100,
-                                // color: Colors.greenAccent,
-                                child: Image.file(
-                                  _imagesList[index],
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                      },
                     ),
                   ),
+                ],
+              ),
+            ),
+
+            // Post Button
             ElevatedButton(
               onPressed: () async {},
               style: ElevatedButton.styleFrom(

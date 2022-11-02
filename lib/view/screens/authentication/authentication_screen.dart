@@ -271,7 +271,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                     loginResponse.user.uid);
                                                 controller.stopLogin();
                                                 navigator.pushReplacementNamed(
-                                                    '/AppRoot');
+                                                    '/appRoot');
                                               } else {
                                                 controller.stopLogin();
                                                 sms.showSnackBar(
@@ -368,7 +368,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                         following: []));
                                               }
                                               navigator.pushReplacementNamed(
-                                                  '/AppRoot');
+                                                  '/appRoot');
                                             } else {
                                               sms.showSnackBar(
                                                 SnackBar(
@@ -723,7 +723,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 controller
                                                     .changeLoginFormStatus();
                                                 navigator.pushReplacementNamed(
-                                                    '/AppRoot');
+                                                    '/appRoot');
                                               } else {
                                                 sms.showSnackBar(
                                                   SnackBar(
@@ -812,7 +812,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                     following: []),
                                               );
                                               navigator.pushReplacementNamed(
-                                                  '/AppRoot');
+                                                  '/appRoot');
                                             } else {
                                               sms.showSnackBar(
                                                 SnackBar(
