@@ -5,14 +5,14 @@ enum LoginFormStatus { yes, no }
 
 enum ProfileStatus {nil , loading , fetched}
 
-enum ArticleUploadingStatus {uploading,notUploading}
+enum PostUploadingStatus {uploading,notUploading}
 
-enum ArticlesStatus {nil,fetched,fetching}
+enum PostsStatus {nil,fetched,fetching}
 
 enum UserUploadingImage {loading,notLoading}
 
-enum FetchingMyArticle {nil,fetching,fetched}
+// enum FetchingMyArticle {nil,fetching,fetched}
 
 enum FollowingUserStatus {yes,no}
 
-enum FetchingSavedArticles {nil,fetching,fetched}
+// enum FetchingSavedArticles {nil,fetching,fetched}

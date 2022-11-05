@@ -1,5 +1,7 @@
-import 'package:coders_arena/controller/user_controller.dart';
+import 'package:coders_arena/controller/add_post_screen_controller.dart';
+import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
+import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/view/screens/authentication/authentication_screen.dart';
 import 'package:coders_arena/view/screens/authentication/verify_email_screen.dart';
 import 'package:coders_arena/view/screens/home/home_screen.dart';
@@ -14,11 +16,20 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AuthNotifier>(
       builder: (context, notifier, child) {
-        return notifier.user != null
-            ? notifier.user!.emailVerified
-                ? const HomeScreen()
-                : const VerifyEmailPage()
-            : const Wrapper();
+        if (notifier.user == null) {
+          debugPrint('user null here');
+        }
+        return notifier.user == null
+            ? const Wrapper()
+            : notifier.user!.emailVerified
+                ? Consumer<AddPostScreenController>(
+                    builder: (context, controller, child) {
+                    return controller.postUploadingStatus ==
+                            PostUploadingStatus.uploading
+                        ? Loading(false)
+                        : const HomeScreen();
+                  })
+                : const VerifyEmailPage();
       },
     );
   }
@@ -37,11 +48,16 @@ class _WrapperState extends State<Wrapper> {
     final firebaseUser = Provider.of<User?>(context);
     if (firebaseUser != null) {
       return firebaseUser.emailVerified
-          ? const HomeScreen()
+          ? Consumer<AddPostScreenController>(
+              builder: (context, controller, child) {
+              return controller.postUploadingStatus ==
+                      PostUploadingStatus.uploading
+                  ? Loading(false)
+                  : const HomeScreen();
+            })
           : const VerifyEmailPage();
     } else {
       return const AuthenticationScreen();
     }
   }
 }
-

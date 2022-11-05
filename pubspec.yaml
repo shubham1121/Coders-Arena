@@ -51,6 +51,8 @@ dependencies:
   firebase_storage: ^10.3.11
   curved_navigation_bar: ^1.0.3
   image_editor_plus: ^0.1.5
+  image_cropper: ^3.0.1
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

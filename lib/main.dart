@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
           '/homeScreen': (context) => const HomeScreen(),
         },
         debugShowCheckedModeBanner: false,
-        home: const HomeScreen(),
+        home: const AppRoot(),
       ),
     );
   }
