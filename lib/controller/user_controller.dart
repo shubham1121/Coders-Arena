@@ -5,15 +5,19 @@ import 'package:coders_arena/services/api/api_services.dart';
 import 'package:coders_arena/services/firebase_services/firebase_storage_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 
 class UserController with ChangeNotifier {
   final ApiServices _apiServices = ApiServices();
+  final ImagePicker _imagePicker = ImagePicker();
   ProfileStatus profileStatus = ProfileStatus.nil;
   UserUploadingImage userUploadingImage = UserUploadingImage.notLoading;
-  FollowingUserStatus followingUserStatus = FollowingUserStatus.no;
-  User? user;
+  // FollowingUserStatus followingUserStatus = FollowingUserStatus.no;
+  UserModel? user;
 
   // set current user
   setUser(String userId) async {
@@ -22,7 +26,7 @@ class UserController with ChangeNotifier {
     try {
       final Response? response = await _apiServices.get(apiEndUrl: endUrl);
       if (response != null) {
-        user = User.fromJson(response.data);
+        user = UserModel.fromJson(response.data);
       }
     } catch (error) {
       debugPrint(error.toString());
@@ -32,7 +36,7 @@ class UserController with ChangeNotifier {
   }
 
   // call this method and provide an user object to create a new user
-  createUser(User newUser) async {
+  createUser(UserModel newUser) async {
     try {
       final Response? response = await _apiServices.put(
           apiEndUrl: 'users/${newUser.userId}.json', data: newUser.toJson());
@@ -47,11 +51,11 @@ class UserController with ChangeNotifier {
   }
 
   // This method returns an User object.
-  Future<User?> getUser(String uid) async {
+  Future<UserModel?> getUser(String uid) async {
     try {
       final response = await _apiServices.get(apiEndUrl: 'users/$uid.json');
       if (response != null) {
-        return User.fromJson(response.data);
+        return UserModel.fromJson(response.data);
       }
     } catch (error) {
       return null;
@@ -59,15 +63,51 @@ class UserController with ChangeNotifier {
     return null;
   }
 
+  Future chooseImage() async {
+    XFile? pickedImage = await _imagePicker.pickImage(source: ImageSource.gallery);
+      final file = File(pickedImage!.path);
+      CroppedFile? croppedFile = await cropSquareImage(file);
+      if (croppedFile != null) {
+        debugPrint(croppedFile.path);
+        File tempFile = File(croppedFile.path);
+        changeDisplayPhoto(tempFile);
+      } else {
+       debugPrint('Null Cropped File');
+      }
+    notifyListeners();
+  }
+
+  Future<CroppedFile?> cropSquareImage(File imageFile) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatioPresets: [CropAspectRatioPreset.square],
+      cropStyle: CropStyle.circle,
+      compressQuality: 50,
+      uiSettings: [
+        androidUiSettingsLocked(),
+      ],
+    );
+    return croppedFile;
+  }
+
+  AndroidUiSettings androidUiSettingsLocked() {
+    return AndroidUiSettings(
+      toolbarColor: Colors.indigo,
+      toolbarWidgetColor: Colors.white,
+    );
+  }
+
 
   // Change display picture , user needs to pass an XFile
-  void changeDisplayPhoto(XFile imageFile) async {
+  void changeDisplayPhoto(File imageFile) async {
     try {
+      debugPrint('Called here');
       userUploadingImage = UserUploadingImage.loading;
-      await Future.delayed(const Duration(milliseconds: 1));
+      // await Future.delayed(const Duration(milliseconds: 100));
       notifyListeners();
       String? url = await getImageUrl(
-          File(imageFile.path), 'users/${user!.userId}/displayPhoto/dp');
+          File(imageFile.path), 'users/${user!.userId}/displayPhoto/${path.basename(imageFile.path)}');
       await _apiServices
           .update(apiEndUrl: 'users/${user!.userId}.json', data: {'dp': url!});
       user!.updateUserDisplayPicture(url);
@@ -142,20 +182,23 @@ class UserController with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  // Update profile -> username and bio
-  updateProfile({required String name, required String bio}) async {
+  // Update profile -> username, about, birthday
+  updateProfile({required String name, required String about, required String birthday}) async {
     try {
+      profileStatus = ProfileStatus.loading;
       final Response? profileUpdateResponse = await _apiServices
           .update(apiEndUrl: 'users/${user!.userId}.json', data: {
         'name': name,
-        'bio': bio,
+        'about': about,
+        'birthday':birthday
       });
       if (profileUpdateResponse != null) {
-        user!.updateUserProfileData(name, bio);
+        user!.updateUserProfileData(name, about,birthday);
       }
     } catch (error) {
       debugPrint(error.toString());
     }
+    profileStatus = ProfileStatus.fetched;
     notifyListeners();
   }
 

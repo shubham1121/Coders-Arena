@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   String name;
   String userId;
   String email;
@@ -10,7 +10,7 @@ class User {
   String about;
   String birthday;
 
-  User({
+  UserModel({
     required this.name,
     required this.dp,
     required this.email,
@@ -23,8 +23,8 @@ class User {
     required this.birthday,
   });
 
-  factory User.fromJson(Map<String, dynamic> data) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> data) {
+    return UserModel(
       name: data['name'] ?? '',
       about: data['about'] ?? '',
       dp: data['dp'],
@@ -57,8 +57,9 @@ class User {
     dp = displayPicture;
   }
 
-  updateUserProfileData(String updatedName, String updatedAbout) {
+  updateUserProfileData(String updatedName, String updatedAbout, String updatedBirthday) {
     name = updatedName;
     about = updatedAbout;
+    birthday = updatedBirthday;
   }
 }

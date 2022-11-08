@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // final AuthService _authService = AuthService(FirebaseAuth.instance);
   final spaceProvider = SpaceProvider();
   bool isLoading = false;
-  int index = 2;
+  int index = 4;
   @override
   Widget build(BuildContext context) {
     // final user = Provider.of<User?>(context);

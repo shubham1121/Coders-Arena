@@ -8,6 +8,7 @@ import 'package:coders_arena/utils/wrapper.dart';
 import 'package:coders_arena/view/screens/authentication/authentication_screen.dart';
 import 'package:coders_arena/view/screens/feed/all_upload_images_view.dart';
 import 'package:coders_arena/view/screens/home/home_screen.dart';
+import 'package:coders_arena/view/screens/profile/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
           '/appRoot': (context) => const AppRoot(),
           '/authScreen': (context) => const AuthenticationScreen(),
           '/homeScreen': (context) => const HomeScreen(),
+          '/editProfile': (context) => const EditProfile(),
         },
         debugShowCheckedModeBanner: false,
         home: const AppRoot(),

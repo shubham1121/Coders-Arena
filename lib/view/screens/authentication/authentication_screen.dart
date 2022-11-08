@@ -352,7 +352,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 UserCredential) {
                                               if (isNewUser) {
                                                 await userController.createUser(
-                                                    user.User(
+                                                    user.UserModel(
                                                         name: googleUser
                                                             .displayName
                                                             .toString()
@@ -705,7 +705,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                               if (signUpResponse.runtimeType ==
                                                   UserCredential) {
                                                 await userController.createUser(
-                                                    user.User(
+                                                    user.UserModel(
                                                         name: userFullName.text
                                                             .trim()
                                                             .toLowerCase(),
@@ -797,7 +797,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             if (signInResponse.runtimeType ==
                                                 UserCredential) {
                                               await userController.createUser(
-                                                user.User(
+                                                user.UserModel(
                                                     name: googleUser.displayName
                                                         .toString()
                                                         .toLowerCase(),

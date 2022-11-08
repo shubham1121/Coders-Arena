@@ -45,7 +45,8 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = Provider.of<User?>(context);
+    // final firebaseUser = Provider.of<User?>(context);
+    final firebaseUser = context.watch<User?>();
     if (firebaseUser != null) {
       return firebaseUser.emailVerified
           ? Consumer<AddPostScreenController>(
