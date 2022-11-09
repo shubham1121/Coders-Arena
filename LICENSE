@@ -4,10 +4,16 @@ Copyright (c) 2022 Shubham Devrani
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+in the Software without restriction, including with limitation the rights
+to use modify, merge, subject to the following conditions:
+
+1. Any copy of a software under GPL must be under same license. So you can't upload the app on a closed source
+   app repository like PlayStore/AppStore without distributing the source code.
+   
+2. You can't sell any copied/modified version of the app under any "non-free" license.
+   You must provide the copy with the original software or with instructions on how to obtain original software,
+   should clearly state all changes, should clearly disclose full source code, should include same license
+   and all copyrights should be retained.
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
