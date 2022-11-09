@@ -3,6 +3,7 @@ import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
+import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/date_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
@@ -14,20 +15,53 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  final String fullName;
+  final String about;
+  final String birthday;
+  const EditProfile(
+      {Key? key,
+      required this.fullName,
+      required this.about,
+      required this.birthday})
+      : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
+  late TextEditingController fullNameController;
+  late TextEditingController aboutController;
+  late TextEditingController birthdayController;
+
+  @override
+  void initState() {
+    super.initState();
+    List<String> initials = upperCaseConverter(widget.fullName);
+    String tempName = "";
+    for (int i = 0; i < initials.length; i++) {
+      if (i == initials.length - 1) {
+        tempName = '$tempName${initials[i]}';
+      } else {
+        tempName = '$tempName${initials[i]} ';
+      }
+    }
+    fullNameController = TextEditingController(text: tempName);
+    aboutController = TextEditingController(text: widget.about);
+    birthdayController = TextEditingController(text: widget.birthday);
+  }
+
   @override
   Widget build(BuildContext context) {
     final spaceProvider = SpaceProvider();
-    // final TextEditingController fullName = TextEditingController();
-    // final TextEditingController about = TextEditingController();
-    // final TextEditingController birthday = TextEditingController();
     final updateProfileForm = GlobalKey<FormState>();
+    discardKeyboard() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      await Future.delayed(
+        const Duration(milliseconds: 200),
+      );
+    }
+
     return SafeArea(
       child: Consumer<UserController>(builder: (context, controller, child) {
         if (controller.profileStatus == ProfileStatus.nil) {
@@ -52,23 +86,6 @@ class _EditProfileState extends State<EditProfile> {
           case ProfileStatus.loading:
             return Loading(false);
           case ProfileStatus.fetched:
-            List<String> initials = controller.user!.name.split(" ");
-            String firstLetter = "", lastLetter = "";
-
-            if (initials.length == 1) {
-              firstLetter = initials[0].characters.first;
-            } else {
-              firstLetter = initials[0].characters.first;
-              lastLetter = initials[1].characters.first;
-            }
-            final TextEditingController fullName = TextEditingController(
-                text:
-                    '${firstLetter.toUpperCase()}${initials[0].substring(1)} ${lastLetter.toUpperCase()}${initials[1].substring(1)}');
-            final TextEditingController about =
-                TextEditingController(text: controller.user!.about);
-            final TextEditingController birthday =
-                TextEditingController(text: controller.user!.birthday);
-
             return Scaffold(
                 backgroundColor: darkBlueColor,
                 body: CustomScrollView(
@@ -83,12 +100,9 @@ class _EditProfileState extends State<EditProfile> {
                               children: [
                                 IconButton(
                                   splashRadius: 25,
-                                  onPressed: () async {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    await Future.delayed(
-                                        Duration(milliseconds: 100));
-                                    Navigator.of(context).pop();
+                                  onPressed: () {
+                                    discardKeyboard().whenComplete(
+                                        () => Navigator.of(context).pop());
                                   },
                                   icon: Icon(
                                     CupertinoIcons.arrow_left,
@@ -179,7 +193,7 @@ class _EditProfileState extends State<EditProfile> {
                                         return null;
                                       }
                                     },
-                                    controller: fullName,
+                                    controller: fullNameController,
                                     style: TextStyle(
                                       fontSize: displayWidth(context) * 0.05,
                                       fontWeight: FontWeight.w300,
@@ -229,7 +243,7 @@ class _EditProfileState extends State<EditProfile> {
                                         return null;
                                       }
                                     },
-                                    controller: about,
+                                    controller: aboutController,
                                     style: TextStyle(
                                       fontSize: displayWidth(context) * 0.05,
                                       fontWeight: FontWeight.w300,
@@ -273,7 +287,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   TextFormField(
                                     readOnly: true,
-                                    controller: birthday,
+                                    controller: birthdayController,
                                     style: TextStyle(
                                       fontSize: displayWidth(context) * 0.05,
                                       fontWeight: FontWeight.w300,
@@ -325,7 +339,7 @@ class _EditProfileState extends State<EditProfile> {
                                             DateTime(DateTime.now().year + 1),
                                       );
                                       if (pickedDate != null) {
-                                        birthday.text = dateConverter(
+                                        birthdayController.text = dateConverter(
                                             pickedDate.day, pickedDate.month);
                                       } else {
                                         debugPrint('Date not Picked!');
@@ -338,14 +352,18 @@ class _EditProfileState extends State<EditProfile> {
                             spaceProvider.getHeightSpace(context, 0.03),
                             ElevatedButton(
                               onPressed: () {
-                                debugPrint(fullName.text);
-                                debugPrint(about.text);
+                                debugPrint(fullNameController.text);
+                                debugPrint(aboutController.text);
                                 controller.updateProfile(
-                                  name: fullName.text,
-                                  about: about.text,
-                                  birthday: birthday.text,
+                                  name: fullNameController.text
+                                      .trim()
+                                      .toLowerCase(),
+                                  about: aboutController.text.trim(),
+                                  birthday: birthdayController.text,
                                 );
-                                Navigator.of(context).pop();
+                                discardKeyboard().whenComplete(
+                                  () => Navigator.of(context).pop(),
+                                );
                               },
                               child: Text(
                                 'Update Profile',
