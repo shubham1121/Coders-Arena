@@ -11,6 +11,7 @@ import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/bottom_modal_sheet.dart';
 import 'package:coders_arena/view/common_ui/custom_icon_text_button.dart';
 import 'package:coders_arena/view/common_ui/profile_data_tile.dart';
+import 'package:coders_arena/view/screens/profile/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -102,8 +103,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.of(context)
-                                        .pushNamed('/editProfile');
+                                    // Navigator.of(context)
+                                    //     .pushNamed('/editProfile');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditProfile(
+                                              fullName: controller.user!.name,
+                                              about: controller.user!.about,
+                                              birthday:
+                                                  controller.user!.birthday),
+                                        ));
                                   },
                                   child: const CustomIconTextButton(
                                     buttonName: 'Edit',
