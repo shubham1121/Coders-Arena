@@ -156,7 +156,7 @@ class AddPostScreenController with ChangeNotifier {
         imageUrls.add(url);
       }
       uploadImages.clear();
-      Post post = Post(
+      PostModel post = PostModel(
         uid: uid,
         caption: caption,
         imageUrls: imageUrls,

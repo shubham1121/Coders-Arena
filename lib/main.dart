@@ -1,5 +1,6 @@
 import 'package:coders_arena/controller/add_post_screen_controller.dart';
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
+import 'package:coders_arena/controller/feed_screen_controller.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
@@ -59,6 +60,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => AddPostScreenController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FeedScreenController(),
         ),
       ],
       child: MaterialApp(

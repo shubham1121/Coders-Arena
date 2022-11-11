@@ -1,13 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/constants/image_constants.dart';
+import 'package:coders_arena/controller/user_controller.dart';
+import 'package:coders_arena/model/post_model.dart';
+import 'package:coders_arena/model/user_model.dart';
+import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
+import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/space_provider.dart';
+import 'package:coders_arena/view/common_ui/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DesignPost extends StatefulWidget {
-  const DesignPost({Key? key}) : super(key: key);
+  const DesignPost({Key? key, required this.postModel, required this.userModel})
+      : super(key: key);
+  final PostModel postModel;
+  final UserModel userModel;
 
   @override
   State<DesignPost> createState() => _DesignPostState();
@@ -18,169 +28,226 @@ class _DesignPostState extends State<DesignPost> {
   @override
   Widget build(BuildContext context) {
     final spaceProvider = SpaceProvider();
-    return Column(
-      children: [
-        spaceProvider.getHeightSpace(context, 0.08),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: 20,
-                backgroundImage: const AssetImage(tempDp),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(
-                      color: darkBlueColor,
-                      width: displayWidth(context) * 0.003,
-                    ),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: displayWidth(context) * 0.003,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              spaceProvider.getWidthSpace(context, 0.04),
-              Text(
-                'Shubham Devrani',
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(
-                    fontSize: displayWidth(context) * 0.04,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Image.asset(
-          tempDp,
-          width: displayWidth(context),
-          fit: BoxFit.fitWidth,
-          height: displayHeight(context) * 0.5,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                Icon(
-                  CupertinoIcons.heart,
-                  size: displayWidth(context) * 0.075,
-                  color: Colors.white,
-                ),
-                spaceProvider.getWidthSpace(context, 0.05),
-                Icon(
-                  CupertinoIcons.chat_bubble,
-                  size: displayWidth(context) * 0.075,
-                  color: Colors.white,
-                ),
-              ]),
-              Icon(
-                CupertinoIcons.bookmark,
-                size: displayWidth(context) * 0.07,
-                color: Colors.white,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Row(
-            children: [
-              isCaptionOpen
-                  ? Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Shubham Devrani ',
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: displayWidth(context) * 0.040,
-                                  fontWeight: FontWeight.w700,
+    List<String> initials = upperCaseConverter(widget.userModel.name);
+    String uName = '';
+    for (int i = 0; i < initials.length; i++) {
+      if (i == initials.length - 1) {
+        uName = '$uName${initials[i]}';
+      } else {
+        uName = '$uName${initials[i]} ';
+      }
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+      child: Column(
+        children: [
+          // spaceProvider.getHeightSpace(context, 0.08),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Row(
+              children: [
+                widget.userModel.dp.isEmpty
+                    ? CircleAvatar(
+                        backgroundColor: Colors.pinkAccent,
+                        radius: 20,
+                        child: Center(
+                          child: initials.length > 1
+                              ? Text(
+                                  "${initials[0][0]}${initials[initials.length - 1][0]}"
+                                      .toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: displayWidth(context) * 0.12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                )
+                              : Text(
+                                  initials[0][0],
+                                  style: TextStyle(
+                                      fontSize: displayWidth(context) * 0.12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
                                 ),
+                        ),
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 20,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            border: Border.all(
+                              color: darkBlueColor,
+                              width: displayWidth(context) * 0.003,
+                            ),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: displayWidth(context) * 0.003,
                               ),
                             ),
-                            TextSpan(
-                              text:
-                                  'Creating a coding environment in your college is not that easy. You have to put  efforts continuously with 100% efforts.'
-                                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously with 100% efforts.',
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: displayWidth(context) * 0.035,
-                                ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.userModel.dp,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    )
-                  : Expanded(
-                      child: RichText(
-                        maxLines: 2,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Shubham Devrani ',
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: displayWidth(context) * 0.040,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously with 100% efforts.'
-                                  'Creating a coding environment in your college is not that easy. You have to put efforts continuously with 100% efforts.',
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: displayWidth(context) * 0.035,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-            ],
-          ),
-        ),
-        isCaptionOpen
-            ? spaceProvider.getWidthSpace(context, 0)
-            : TextButton(
-                onPressed: () {
-                  setState(() {
-                    isCaptionOpen = true;
-                  });
-                },
-                child: Text(
-                  'View More',
+                spaceProvider.getWidthSpace(context, 0.04),
+                Text(
+                  uName,
                   style: GoogleFonts.nunito(
                     textStyle: TextStyle(
-                      fontSize: displayWidth(context) * 0.035,
-                      fontWeight: FontWeight.w400,
+                      fontSize: displayWidth(context) * 0.04,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-              ),
-      ],
+              ],
+            ),
+          ),
+          // Image.asset(
+          //   tempDp,
+          //   width: displayWidth(context),
+          //   fit: BoxFit.fitWidth,
+          //   height: displayHeight(context) * 0.5,
+          // ),
+          SizedBox(
+            height: displayHeight(context) * 0.5,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              // shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.postModel.imageUrls.length,
+                itemBuilder: (context, index) {
+                  return CachedNetworkImage(
+                    imageUrl: widget.postModel.imageUrls[index],
+                    fit: BoxFit.fitWidth,
+                    width: displayWidth(context),
+                    height: displayHeight(context) * 0.5,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                  );
+                }),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Icon(
+                    CupertinoIcons.heart,
+                    size: displayWidth(context) * 0.075,
+                    color: Colors.white,
+                  ),
+                  spaceProvider.getWidthSpace(context, 0.05),
+                  Icon(
+                    CupertinoIcons.chat_bubble,
+                    size: displayWidth(context) * 0.075,
+                    color: Colors.white,
+                  ),
+                ]),
+                Icon(
+                  CupertinoIcons.bookmark,
+                  size: displayWidth(context) * 0.07,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Row(
+              children: [
+                isCaptionOpen
+                    ? Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '$uName ',
+                                style: GoogleFonts.nunito(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: displayWidth(context) * 0.040,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                text: widget.postModel.caption,
+                                style: GoogleFonts.nunito(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: displayWidth(context) * 0.035,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: RichText(
+                          maxLines: 2,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '$uName ',
+                                style: GoogleFonts.nunito(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: displayWidth(context) * 0.040,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                text: widget.postModel.caption,
+                                style: GoogleFonts.nunito(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: displayWidth(context) * 0.035,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+              ],
+            ),
+          ),
+          isCaptionOpen
+              ? spaceProvider.getWidthSpace(context, 0)
+              : GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isCaptionOpen = true;
+                    });
+                  },
+                  child: Text(
+                    'View More',
+                    style: GoogleFonts.nunito(
+                      textStyle: TextStyle(
+                        fontSize: displayWidth(context) * 0.035,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
+        ],
+      ),
     );
   }
 }

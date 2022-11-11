@@ -1,18 +1,18 @@
-class Post {
+class PostModel {
   String uid;
   String caption;
-  List<String?> imageUrls;
+  List<dynamic> imageUrls;
   int likes;
 
-  Post({
+  PostModel({
     required this.uid,
     required this.caption,
     required this.imageUrls,
     required this.likes,
   });
 
-  factory Post.fromJson(Map<String, dynamic> data) {
-    return Post(
+  factory PostModel.fromJson(Map<String, dynamic> data) {
+    return PostModel(
       uid: data['uid'] ?? '',
       caption: data['caption'] ?? '',
       imageUrls: data['imagesUrls'] ?? [],
