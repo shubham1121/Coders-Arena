@@ -13,6 +13,7 @@ class FeedScreenController with ChangeNotifier {
   Map<String, List<PostModel>> feedScreenPosts = {};
 
   Future<void> fetchPosts() async {
+    debugPrint('called here but why');
     Map<String, List<PostModel>> fetchedPost = {};
     try {
       postsStatus = PostsStatus.fetching;

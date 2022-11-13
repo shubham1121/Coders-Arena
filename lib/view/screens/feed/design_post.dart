@@ -1,14 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coders_arena/constants/color_constants.dart';
-import 'package:coders_arena/constants/image_constants.dart';
-import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/model/post_model.dart';
 import 'package:coders_arena/model/user_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
-import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/space_provider.dart';
-import 'package:coders_arena/view/common_ui/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,6 +21,23 @@ class DesignPost extends StatefulWidget {
 
 class _DesignPostState extends State<DesignPost> {
   bool isCaptionOpen = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => loadImages());
+  }
+
+  Future loadImages() async {
+    await Future.wait(widget.postModel.imageUrls
+        .map((urlImage) => cacheImage(context, urlImage))
+        .toList());
+  }
+
+  Future cacheImage(BuildContext context, String urlImage) =>
+      precacheImage(CachedNetworkImageProvider(urlImage), context);
+
   @override
   Widget build(BuildContext context) {
     final spaceProvider = SpaceProvider();
@@ -112,17 +125,11 @@ class _DesignPostState extends State<DesignPost> {
               ],
             ),
           ),
-          // Image.asset(
-          //   tempDp,
-          //   width: displayWidth(context),
-          //   fit: BoxFit.fitWidth,
-          //   height: displayHeight(context) * 0.5,
-          // ),
           SizedBox(
             height: displayHeight(context) * 0.5,
             child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              // shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                // shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.postModel.imageUrls.length,
                 itemBuilder: (context, index) {
@@ -131,8 +138,8 @@ class _DesignPostState extends State<DesignPost> {
                     fit: BoxFit.fitWidth,
                     width: displayWidth(context),
                     height: displayHeight(context) * 0.5,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                    // placeholder: (context, url) =>
+                    //     const CircularProgressIndicator(),
                   );
                 }),
           ),
@@ -229,23 +236,25 @@ class _DesignPostState extends State<DesignPost> {
           ),
           isCaptionOpen
               ? spaceProvider.getWidthSpace(context, 0)
-              : GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isCaptionOpen = true;
-                    });
-                  },
-                  child: Text(
-                    'View More',
-                    style: GoogleFonts.nunito(
-                      textStyle: TextStyle(
-                        fontSize: displayWidth(context) * 0.035,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.blue,
+              : widget.postModel.caption.length > 55
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isCaptionOpen = true;
+                        });
+                      },
+                      child: Text(
+                        'View More',
+                        style: GoogleFonts.nunito(
+                          textStyle: TextStyle(
+                            fontSize: displayWidth(context) * 0.035,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.blue,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    )
+                  : spaceProvider.getHeightSpace(context, 0),
         ],
       ),
     );

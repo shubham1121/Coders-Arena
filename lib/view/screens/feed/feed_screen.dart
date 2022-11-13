@@ -4,6 +4,8 @@ import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/model/post_model.dart';
 import 'package:coders_arena/model/user_model.dart';
+import 'package:coders_arena/utils/shimmer.dart';
+import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/custom_app_bar.dart';
 import 'package:coders_arena/view/screens/feed/design_post.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,8 @@ class FeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SpaceProvider spaceProvider = SpaceProvider();
+    final Shimmer shimmer = Shimmer();
     return Consumer<FeedScreenController>(
         builder: (context, postController, child) {
       if (postController.postsStatus == PostsStatus.nil) {
@@ -66,7 +70,7 @@ class FeedScreen extends StatelessWidget {
                                   }
                                   else
                                   {
-                                    return const CircularProgressIndicator();
+                                    return shimmer.shimmerForFeeds(spaceProvider, context);
                                   }
                                 });
                           },

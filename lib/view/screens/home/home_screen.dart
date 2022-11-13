@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Scaffold(
+        extendBody: true,
         body: screens[index],
         // screens[index],
         backgroundColor: darkBlueColor,
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: displayWidth(context) * 0.065),
           ),
           child: CurvedNavigationBar(
-            backgroundColor: darkBlueColor,
+            backgroundColor: Colors.transparent,
             color: lightBlueColor,
             buttonBackgroundColor: lightBlueColor,
             items: screenIcons,

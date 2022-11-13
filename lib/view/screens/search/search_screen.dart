@@ -1,3 +1,5 @@
+import 'package:coders_arena/utils/shimmer.dart';
+import 'package:coders_arena/utils/space_provider.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -5,13 +7,8 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Search Screen',
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-    );
+    final Shimmer shimmer = Shimmer();
+    final SpaceProvider spaceProvider = SpaceProvider();
+    return shimmer.shimmerForFeeds(spaceProvider, context);
   }
 }
