@@ -10,6 +10,23 @@ class ApiServices {
     _dio = Dio();
   }
 
+  Future<Response?> getContestList({required String clistApiEndUrl}) async {
+    try {
+      final Response response = await _dio.get(dotenv.env['clistApiBaseUrl']! + clistApiEndUrl);
+      switch (response.statusCode) {
+        case 200:
+          return response;
+        default:
+          return null;
+      }
+    } on TimeoutException catch (error) {
+      debugPrint(error.message);
+    } on DioError catch (error) {
+      debugPrint(error.message);
+    }
+    return null;
+  }
+
   Future<Response?> get({required String apiEndUrl}) async {
     try {
       final Response response =

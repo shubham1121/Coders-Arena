@@ -83,9 +83,8 @@ class FeedScreen extends StatelessWidget {
                 ;
             }
           }
-          return const Center(
-            child: Text('Nothing Here!'),
-          );
+            return const Center(
+                child:  Text('Nothing Here!'));
       }
     });
   }

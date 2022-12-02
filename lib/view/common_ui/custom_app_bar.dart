@@ -8,6 +8,7 @@ import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/space_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -71,73 +72,82 @@ class CustomisedAppBar extends StatelessWidget {
                         size: displayWidth(context) * 0.06,
                       ),
                     ),
-                    spaceProvider.getWidthSpace(context, 0.04),
-                    SizedBox(
-                      width: displayWidth(context) * 0.06,
-                      height: displayHeight(context) * 0.06,
-                      child: Consumer<UserController>(
-                        builder: (context, controller, child) {
-                          if (controller.profileStatus == ProfileStatus.nil) {
-                            controller.setUser(
-                                FirebaseAuth.instance.currentUser!.uid);
-                          }
-                          switch (controller.profileStatus) {
-                            case ProfileStatus.nil:
-                              return Center(
-                                child: MaterialButton(
-                                  color: darkBlueColor,
-                                  onPressed: () {
-                                    controller.setUser(
-                                        FirebaseAuth.instance.currentUser!.uid);
-                                  },
-                                  child: const Text(
-                                    'Refresh Profile',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            case ProfileStatus.loading:
-                              return SizedBox(
-                                width: displayWidth(context) * 0.1,
-                                height: displayHeight(context) * 0.02,
-                                child: CircularProgressIndicator(),
-                              );
-                            case ProfileStatus.fetched:
-                              List<String> initials =
-                                  controller.user!.name.split(" ");
-                              String firstLetter = "", lastLetter = "";
-
-                              if (initials.length == 1) {
-                                firstLetter = initials[0].characters.first;
-                              } else {
-                                firstLetter = initials[0].characters.first;
-                                lastLetter = initials[1].characters.first;
-                              }
-                              return Material(
-                                shape: const CircleBorder(),
-                                clipBehavior: Clip.hardEdge,
-                                color: Colors.transparent,
-                                child: CircleAvatar(
-                                  maxRadius: 12,
-                                  backgroundColor: Colors.transparent,
-                                  child: InkWell(
-                                    splashColor: Colors.grey.shade500,
-                                    onTap: () {},
-                                    child: CachedNetworkImage(
-                                      imageUrl: controller.user!.dp,
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                    ),
-                                  ),
-                                ),
-                              );
-                          }
-                        },
+                    spaceProvider.getWidthSpace(context, 0.01),
+                    // SizedBox(
+                    //   width: displayWidth(context) * 0.06,
+                    //   height: displayHeight(context) * 0.06,
+                    //   child: Consumer<UserController>(
+                    //     builder: (context, controller, child) {
+                    //       if (controller.profileStatus == ProfileStatus.nil) {
+                    //         controller.setUser(
+                    //             FirebaseAuth.instance.currentUser!.uid);
+                    //       }
+                    //       switch (controller.profileStatus) {
+                    //         case ProfileStatus.nil:
+                    //           return Center(
+                    //             child: MaterialButton(
+                    //               color: darkBlueColor,
+                    //               onPressed: () {
+                    //                 controller.setUser(
+                    //                     FirebaseAuth.instance.currentUser!.uid);
+                    //               },
+                    //               child: const Text(
+                    //                 'Refresh Profile',
+                    //                 style: TextStyle(
+                    //                   color: Colors.white,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           );
+                    //         case ProfileStatus.loading:
+                    //           return SizedBox(
+                    //             width: displayWidth(context) * 0.1,
+                    //             height: displayHeight(context) * 0.02,
+                    //             child: CircularProgressIndicator(),
+                    //           );
+                    //         case ProfileStatus.fetched:
+                    //           List<String> initials =
+                    //               controller.user!.name.split(" ");
+                    //           String firstLetter = "", lastLetter = "";
+                    //
+                    //           if (initials.length == 1) {
+                    //             firstLetter = initials[0].characters.first;
+                    //           } else {
+                    //             firstLetter = initials[0].characters.first;
+                    //             lastLetter = initials[1].characters.first;
+                    //           }
+                    //           return Material(
+                    //             shape: const CircleBorder(),
+                    //             clipBehavior: Clip.hardEdge,
+                    //             color: Colors.transparent,
+                    //             child: CircleAvatar(
+                    //               maxRadius: 12,
+                    //               backgroundColor: Colors.transparent,
+                    //               child: InkWell(
+                    //                 splashColor: Colors.grey.shade500,
+                    //                 onTap: () {},
+                    //                 child: CachedNetworkImage(
+                    //                   imageUrl: controller.user!.dp,
+                    //                   placeholder: (context, url) =>
+                    //                       const CircularProgressIndicator(),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           );
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {},
+                      icon: Icon(
+                        CupertinoIcons.chat_bubble_text,
+                        color: Colors.white,
+                        size: displayWidth(context) * 0.06,
                       ),
                     ),
-                    spaceProvider.getWidthSpace(context, 0.03),
+                    spaceProvider.getWidthSpace(context, 0.01),
                   ],
                 ),
               ),

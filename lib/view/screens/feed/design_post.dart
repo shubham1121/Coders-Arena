@@ -128,7 +128,7 @@ class _DesignPostState extends State<DesignPost> {
           SizedBox(
             height: displayHeight(context) * 0.5,
             child: ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 // shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.postModel.imageUrls.length,

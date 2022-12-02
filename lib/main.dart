@@ -1,5 +1,6 @@
 import 'package:coders_arena/controller/add_post_screen_controller.dart';
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
+import 'package:coders_arena/controller/contest_list_screen_controller.dart';
 import 'package:coders_arena/controller/feed_screen_controller.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
@@ -63,6 +64,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => FeedScreenController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ContestListScreenController(),
         ),
       ],
       child: MaterialApp(
