@@ -45,32 +45,40 @@ class FeedScreen extends StatelessWidget {
           );
         case PostsStatus.fetched:
           if (postController.feedScreenPosts.isNotEmpty) {
-            for (List<PostModel> postList
-                in postController.feedScreenPosts.values) {
-              debugPrint(postList.toString());
-              return Column(
-                children: [
-                  CustomisedAppBar(),
-                  Expanded(
+            Future<void> handleRefresh() async {
+              await postController.fetchPosts();
+            }
+
+            return Column(
+              children: [
+                const CustomisedAppBar(),
+                Expanded(
+                  child: RefreshIndicator(
+                    backgroundColor: lightBlueColor,
+                    color: darkBlueColor,
+                    onRefresh: handleRefresh,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: postList.length,
+                      itemCount: postController.feedScreenPosts.length,
                       itemBuilder: (context, index) {
                         return Consumer<UserController>(
-                          builder: (context,userController,child){
+                          builder: (context, userController, child) {
                             return FutureBuilder<UserModel?>(
-                                future: userController.getUser(postList[index].uid),
-                                builder: (context,snapshot){
-                                  if(snapshot.connectionState == ConnectionState.done && snapshot.hasData)
-                                  {
+                                future: userController.getUser(
+                                    postController.feedScreenPosts[index].uid),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done &&
+                                      snapshot.hasData) {
                                     return DesignPost(
-                                      postModel: postList[index],
+                                      postModel:
+                                          postController.feedScreenPosts[index],
                                       userModel: snapshot.data!,
                                     );
-                                  }
-                                  else
-                                  {
-                                    return shimmer.shimmerForFeeds(spaceProvider, context);
+                                  } else {
+                                    debugPrint('else shimmer');
+                                    return shimmer.shimmerForFeeds(
+                                        spaceProvider, context);
                                   }
                                 });
                           },
@@ -78,13 +86,12 @@ class FeedScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                ],
-              )
-                ;
-            }
+                ),
+              ],
+            );
+            // }
           }
-            return const Center(
-                child:  Text('Nothing Here!'));
+          return const Center(child: Text('Nothing Here!'));
       }
     });
   }

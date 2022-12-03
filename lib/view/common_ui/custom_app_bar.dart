@@ -35,16 +35,17 @@ class CustomisedAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'CoCuit',
+              'Coder\'s Arena',
               style: GoogleFonts.nunito(
                 textStyle: TextStyle(
-                  fontSize: displayWidth(context) * 0.11,
+                  fontSize: displayWidth(context) * 0.099,
                   color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
             Container(
+              height: displayWidth(context) * 0.1,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey.shade700)),
@@ -53,101 +54,80 @@ class CustomisedAppBar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // IconButton(
+                    //   padding: EdgeInsets.zero,
+                    //   onPressed: () {},
+                    //   icon: Icon(
+                    //     Icons.add_box_outlined,
+                    //     color: Colors.white,
+                    //     size: displayWidth(context) * 0.06,
+                    //   ),
+                    // ),
+                    // spaceProvider.getWidthSpace(context, 0.01),
                     IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.add_box_outlined,
-                        color: Colors.white,
-                        size: displayWidth(context) * 0.06,
-                      ),
-                    ),
-                    spaceProvider.getWidthSpace(context, 0.01),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {},
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Coming Soon!',
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: displayWidth(context) * 0.04,
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            elevation: 10,
+                            duration: const Duration(milliseconds: 600),
+                            width: displayWidth(context) * 0.33,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        );
+                      },
                       icon: Icon(
                         Icons.notifications_none_outlined,
                         color: Colors.white,
-                        size: displayWidth(context) * 0.06,
+                        size: displayWidth(context) * 0.055,
                       ),
                     ),
-                    spaceProvider.getWidthSpace(context, 0.01),
-                    // SizedBox(
-                    //   width: displayWidth(context) * 0.06,
-                    //   height: displayHeight(context) * 0.06,
-                    //   child: Consumer<UserController>(
-                    //     builder: (context, controller, child) {
-                    //       if (controller.profileStatus == ProfileStatus.nil) {
-                    //         controller.setUser(
-                    //             FirebaseAuth.instance.currentUser!.uid);
-                    //       }
-                    //       switch (controller.profileStatus) {
-                    //         case ProfileStatus.nil:
-                    //           return Center(
-                    //             child: MaterialButton(
-                    //               color: darkBlueColor,
-                    //               onPressed: () {
-                    //                 controller.setUser(
-                    //                     FirebaseAuth.instance.currentUser!.uid);
-                    //               },
-                    //               child: const Text(
-                    //                 'Refresh Profile',
-                    //                 style: TextStyle(
-                    //                   color: Colors.white,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           );
-                    //         case ProfileStatus.loading:
-                    //           return SizedBox(
-                    //             width: displayWidth(context) * 0.1,
-                    //             height: displayHeight(context) * 0.02,
-                    //             child: CircularProgressIndicator(),
-                    //           );
-                    //         case ProfileStatus.fetched:
-                    //           List<String> initials =
-                    //               controller.user!.name.split(" ");
-                    //           String firstLetter = "", lastLetter = "";
-                    //
-                    //           if (initials.length == 1) {
-                    //             firstLetter = initials[0].characters.first;
-                    //           } else {
-                    //             firstLetter = initials[0].characters.first;
-                    //             lastLetter = initials[1].characters.first;
-                    //           }
-                    //           return Material(
-                    //             shape: const CircleBorder(),
-                    //             clipBehavior: Clip.hardEdge,
-                    //             color: Colors.transparent,
-                    //             child: CircleAvatar(
-                    //               maxRadius: 12,
-                    //               backgroundColor: Colors.transparent,
-                    //               child: InkWell(
-                    //                 splashColor: Colors.grey.shade500,
-                    //                 onTap: () {},
-                    //                 child: CachedNetworkImage(
-                    //                   imageUrl: controller.user!.dp,
-                    //                   placeholder: (context, url) =>
-                    //                       const CircularProgressIndicator(),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           );
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
+                    spaceProvider.getWidthSpace(context, 0.005),
                     IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () {},
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Coming Soon!',
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: displayWidth(context) * 0.04,
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            elevation: 10,
+                            duration: const Duration(milliseconds: 600),
+                            width: displayWidth(context) * 0.33,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        );
+                      },
                       icon: Icon(
                         CupertinoIcons.chat_bubble_text,
                         color: Colors.white,
-                        size: displayWidth(context) * 0.06,
+                        size: displayWidth(context) * 0.055,
                       ),
                     ),
-                    spaceProvider.getWidthSpace(context, 0.01),
+                    // spaceProvider.getWidthSpace(context, 0.01),
                   ],
                 ),
               ),

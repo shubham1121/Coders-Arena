@@ -1,7 +1,8 @@
+import 'package:coders_arena/controller/disposable_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:flutter/material.dart';
 
-class AuthScreenController with ChangeNotifier{
+class AuthScreenController extends DisposableProvider{
   AuthLoginSignupStatus authLoginSignupStatus = AuthLoginSignupStatus.notLoading;
   LoginFormStatus loginFormStatus = LoginFormStatus.yes;
   bool isPasswordVisible = false;
@@ -43,6 +44,12 @@ class AuthScreenController with ChangeNotifier{
         notifyListeners();
       }
 
+  }
+  @override
+  void disposeValues() {
+    authLoginSignupStatus = AuthLoginSignupStatus.notLoading;
+    loginFormStatus = LoginFormStatus.yes;
+    isPasswordVisible = false;
   }
 
 }

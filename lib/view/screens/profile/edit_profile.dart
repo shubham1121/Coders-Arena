@@ -88,6 +88,15 @@ class _EditProfileState extends State<EditProfile> {
             case ProfileStatus.loading:
               return Loading(false);
             case ProfileStatus.fetched:
+              List<String> initials = controller.user!.name.split(" ");
+              String firstLetter = "", lastLetter = "";
+
+              if (initials.length == 1) {
+                firstLetter = initials[0].characters.first;
+              } else {
+                firstLetter = initials[0].characters.first;
+                lastLetter = initials[1].characters.first;
+              }
               return CustomScrollView(
                 scrollDirection: Axis.vertical,
                 slivers: [
@@ -104,7 +113,7 @@ class _EditProfileState extends State<EditProfile> {
                                 splashRadius: 25,
                                 onPressed: () {
                                   discardKeyboard().whenComplete(
-                                          () => Navigator.of(context).pop());
+                                      () => Navigator.of(context).pop());
                                 },
                                 icon: Icon(
                                   CupertinoIcons.arrow_left,
@@ -129,43 +138,72 @@ class _EditProfileState extends State<EditProfile> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               controller.userUploadingImage ==
-                                  UserUploadingImage.loading
+                                      UserUploadingImage.loading
                                   ? const CircularProgressIndicator()
-                                  : CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: 60,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(60),
-                                    border: Border.all(
-                                      color: darkBlueColor,
-                                      width:
-                                      displayWidth(context) * 0.009,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(60),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: displayWidth(context) *
-                                            0.005,
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(50),
-                                      child: CachedNetworkImage(
-                                        imageUrl: controller.user!.dp,
-                                        placeholder: (context, url) =>
-                                            CircularProgressIndicator(),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                  : controller.user!.dp == ""
+                                      ? CircleAvatar(
+                                          backgroundColor: Colors.pinkAccent,
+                                          radius: 50,
+                                          child: Center(
+                                            child: initials.length > 1
+                                                ? Text(
+                                                    "$firstLetter$lastLetter"
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                        fontSize: displayWidth(
+                                                                context) *
+                                                            0.12,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white),
+                                                  )
+                                                : Text(
+                                                    firstLetter.toUpperCase(),
+                                                    style: TextStyle(
+                                                        fontSize: displayWidth(
+                                                                context) *
+                                                            0.12,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white),
+                                                  ),
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          radius: 60,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
+                                              border: Border.all(
+                                                color: darkBlueColor,
+                                                width: displayWidth(context) *
+                                                    0.009,
+                                              ),
+                                            ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(60),
+                                                border: Border.all(
+                                                  color: Colors.white,
+                                                  width: displayWidth(context) *
+                                                      0.005,
+                                                ),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: controller.user!.dp,
+                                                  placeholder: (context, url) =>
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                             ],
                           ),
                           spaceProvider.getHeightSpace(context, 0.01),
@@ -204,8 +242,7 @@ class _EditProfileState extends State<EditProfile> {
                                   textAlignVertical: TextAlignVertical.top,
                                   textAlign: TextAlign.start,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 8),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
@@ -220,8 +257,7 @@ class _EditProfileState extends State<EditProfile> {
                                     labelText: 'Full Name',
                                     labelStyle: GoogleFonts.nunito(
                                       textStyle: TextStyle(
-                                        fontSize:
-                                        displayWidth(context) * 0.055,
+                                        fontSize: displayWidth(context) * 0.055,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.grey.shade200,
                                       ),
@@ -229,8 +265,7 @@ class _EditProfileState extends State<EditProfile> {
                                     hintText: 'Alex',
                                     hintStyle: GoogleFonts.nunito(
                                       textStyle: TextStyle(
-                                        fontSize:
-                                        displayWidth(context) * 0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.grey.shade500,
                                       ),
@@ -256,8 +291,7 @@ class _EditProfileState extends State<EditProfile> {
                                   minLines: 1,
                                   maxLines: 10,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 8),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
@@ -272,8 +306,7 @@ class _EditProfileState extends State<EditProfile> {
                                     labelText: 'About',
                                     labelStyle: GoogleFonts.nunito(
                                       textStyle: TextStyle(
-                                        fontSize:
-                                        displayWidth(context) * 0.055,
+                                        fontSize: displayWidth(context) * 0.055,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.grey.shade200,
                                       ),
@@ -281,8 +314,7 @@ class _EditProfileState extends State<EditProfile> {
                                     hintText: 'Flutter Developer',
                                     hintStyle: GoogleFonts.nunito(
                                       textStyle: TextStyle(
-                                        fontSize:
-                                        displayWidth(context) * 0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.grey.shade500,
                                       ),
@@ -300,8 +332,7 @@ class _EditProfileState extends State<EditProfile> {
                                   textAlignVertical: TextAlignVertical.top,
                                   textAlign: TextAlign.start,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 8),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
@@ -316,8 +347,7 @@ class _EditProfileState extends State<EditProfile> {
                                     labelText: 'Birthday',
                                     labelStyle: GoogleFonts.nunito(
                                       textStyle: TextStyle(
-                                        fontSize:
-                                        displayWidth(context) * 0.055,
+                                        fontSize: displayWidth(context) * 0.055,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.grey.shade200,
                                       ),
@@ -325,22 +355,19 @@ class _EditProfileState extends State<EditProfile> {
                                     hintText: 'Alex',
                                     hintStyle: GoogleFonts.nunito(
                                       textStyle: TextStyle(
-                                        fontSize:
-                                        displayWidth(context) * 0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.grey.shade500,
                                       ),
                                     ),
                                   ),
                                   onTap: () async {
-                                    DateTime? pickedDate =
-                                    await showDatePicker(
+                                    DateTime? pickedDate = await showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
-                                      firstDate:
-                                      DateTime(DateTime.now().year),
+                                      firstDate: DateTime(DateTime.now().year),
                                       lastDate:
-                                      DateTime(DateTime.now().year + 1),
+                                          DateTime(DateTime.now().year + 1),
                                     );
                                     if (pickedDate != null) {
                                       birthdayController.text = dateConverter(
@@ -366,7 +393,7 @@ class _EditProfileState extends State<EditProfile> {
                                 birthday: birthdayController.text,
                               );
                               discardKeyboard().whenComplete(
-                                    () => Navigator.of(context).pop(),
+                                () => Navigator.of(context).pop(),
                               );
                             },
                             child: Text(

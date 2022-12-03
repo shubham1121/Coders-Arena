@@ -11,10 +11,13 @@ enum PostsStatus {nil,fetched,fetching}
 
 enum UserUploadingImage {loading,notLoading}
 
-// enum FetchingMyArticle {nil,fetching,fetched}
+enum FetchingMyPosts {nil,fetching,fetched}
+
+enum FetchingMyFollowersAndFollowings {nil,fetching,fetched}
 
 enum FollowingUserStatus {yes,no}
 
 enum ContestListStatus{nil, fetching, fetched}
+
 
 // enum FetchingSavedArticles {nil,fetching,fetched}

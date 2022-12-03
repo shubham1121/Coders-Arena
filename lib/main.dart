@@ -2,6 +2,7 @@ import 'package:coders_arena/controller/add_post_screen_controller.dart';
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
 import 'package:coders_arena/controller/contest_list_screen_controller.dart';
 import 'package:coders_arena/controller/feed_screen_controller.dart';
+import 'package:coders_arena/controller/my_posts_controller.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ContestListScreenController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MyPostsController(),
         ),
       ],
       child: MaterialApp(

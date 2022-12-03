@@ -3,9 +3,7 @@ import 'package:coders_arena/utils/space_provider.dart';
 import 'package:flutter/material.dart';
 
 class Shimmer {
-
-  Widget shimmerForFeeds(SpaceProvider spaceProvider, BuildContext context)
-  {
+  Widget shimmerForFeeds(SpaceProvider spaceProvider, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: Column(
@@ -34,8 +32,8 @@ class Shimmer {
                 ),
                 spaceProvider.getWidthSpace(context, 0.04),
                 Container(
-                  height: displayHeight(context)*0.035,
-                  width: displayWidth(context)*0.6,
+                  height: displayHeight(context) * 0.035,
+                  width: displayWidth(context) * 0.6,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -44,7 +42,6 @@ class Shimmer {
                       ],
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
-
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -54,7 +51,7 @@ class Shimmer {
           ),
           spaceProvider.getHeightSpace(context, 0.015),
           Container(
-            height: displayHeight(context)*0.5,
+            height: displayHeight(context) * 0.5,
             width: displayWidth(context),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -64,14 +61,13 @@ class Shimmer {
                 ],
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-
               ),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           spaceProvider.getHeightSpace(context, 0.015),
           Container(
-            height: displayHeight(context)*0.08,
+            height: displayHeight(context) * 0.08,
             width: displayWidth(context),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -81,7 +77,6 @@ class Shimmer {
                 ],
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-
               ),
               borderRadius: BorderRadius.circular(10),
             ),
@@ -91,4 +86,29 @@ class Shimmer {
     );
   }
 
+  Widget shimmerForContests(SpaceProvider spaceProvider, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+      child: Column(
+        children: [
+          // spaceProvider.getHeightSpace(context, 0.08),
+          Container(
+            height: displayHeight(context) * 0.19,
+            width: displayWidth(context) * 0.9,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blueGrey,
+                  Colors.grey.shade500,
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
