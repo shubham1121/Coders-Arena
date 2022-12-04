@@ -7,6 +7,7 @@ import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
+import 'package:coders_arena/utils/my_posts_helper.dart';
 import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/bottom_modal_sheet.dart';
 import 'package:coders_arena/view/common_ui/custom_icon_text_button.dart';
@@ -33,9 +34,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     final currentUser = Provider.of<User>(context);
     return Consumer<UserController>(builder: (context, controller, child) {
       if (controller.profileStatus == ProfileStatus.nil) {
+        debugPrint('Profile Status Loading');
         controller.setUser(FirebaseAuth.instance.currentUser!.uid);
-        // controller.fetchFollowers(controller.user!.followers);
-        // controller.fetchFollowings(controller.user!.following);
       }
       switch (controller.profileStatus) {
         case ProfileStatus.nil:
@@ -54,6 +54,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             ),
           );
         case ProfileStatus.loading:
+          debugPrint('Profile Status Loading');
           return Loading(false);
         case ProfileStatus.fetched:
           List<String> initials = controller.user!.name.split(" ");
@@ -65,34 +66,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             firstLetter = initials[0].characters.first;
             lastLetter = initials[1].characters.first;
           }
-          return Consumer<MyPostsController>(
-            builder: (context, myPostController, child) {
-              if (myPostController.fetchingMyPosts == FetchingMyPosts.nil) {
-                myPostController.fetchMyPosts(controller.user!.userId);
-                // controller.fetchFollowers(controller.user!.followers);
-                // controller.fetchFollowings(controller.user!.following);
-              }
-              switch (myPostController.fetchingMyPosts) {
-                case FetchingMyPosts.nil:
-                  return Center(
-                    child: MaterialButton(
-                      color: darkBlueColor,
-                      onPressed: () {
-                        controller
-                            .setUser(FirebaseAuth.instance.currentUser!.uid);
-                      },
-                      child: const Text(
-                        'Refresh Profile',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  );
-                case FetchingMyPosts.fetching:
-                  return Loading(false);
-                case FetchingMyPosts.fetched:
-                  return Padding(
+          return Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -336,60 +310,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     ),
                                   ],
                                 ),
-                                Column(
-                                  children: [
-                                    Material(
-                                      color: Colors.grey.shade300,
-                                      clipBehavior: Clip.hardEdge,
-                                      elevation: 5,
-                                      shadowColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: InkWell(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            backgroundColor: Colors.transparent,
-                                            isScrollControlled: true,
-                                            builder: (context) =>
-                                                bottomModalSheet
-                                                    .buildSheetForMyPosts(
-                                                        context,
-                                                        myPostController
-                                                            .myPublishedPosts,
-                                                        myPostController),
-                                          );
-                                        },
-                                        splashColor: Colors.grey.shade400,
-                                        child: CustomIconTextButton(
-                                          buttonName: '',
-                                          iconData: Icons.abc,
-                                          isText: true,
-                                          text: myPostController
-                                                      .myPublishedPosts
-                                                      .length >=
-                                                  10
-                                              ? myPostController
-                                                  .myPublishedPosts.length
-                                                  .toString()
-                                              : '0${myPostController.myPublishedPosts.length}',
-                                        ),
-                                      ),
-                                    ),
-                                    spaceProvider.getHeightSpace(context, 0.01),
-                                    Text(
-                                      'My Posts',
-                                      style: GoogleFonts.nunito(
-                                        textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize:
-                                              displayWidth(context) * 0.04,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                //My Posts
+                                MyPostsHelper(uid: controller.user!.userId),
                                 Column(
                                   children: [
                                     Material(
@@ -471,26 +393,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             spaceProvider.getHeightSpace(context, 0.06),
                           ],
                         ),
-                        // spaceProvider.getHeightSpace(context, 0.16),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Text(
-                        //       'Made in India with \u2764.',
-                        //       style: GoogleFonts.alegreya(
-                        //         color: Colors.white,
-                        //         fontSize: displayWidth(context) * 0.04,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // )
                       ],
                     ),
                   );
               }
-            },
-          );
       }
-    });
+    );
   }
 }

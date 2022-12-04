@@ -268,7 +268,7 @@ class BottomModalSheet {
                                   following[index].dp.isEmpty
                                       ? CircleAvatar(
                                           backgroundColor: Colors.pinkAccent,
-                                          radius: 25,
+                                          radius: 20,
                                           child: Center(
                                             child: initials.length > 1
                                                 ? Text(

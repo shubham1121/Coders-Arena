@@ -1,4 +1,6 @@
+import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/controller/add_post_screen_controller.dart';
+import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
 import 'package:coders_arena/utils/loading.dart';
@@ -54,7 +56,36 @@ class _WrapperState extends State<Wrapper> {
               return controller.postUploadingStatus ==
                       PostUploadingStatus.uploading
                   ? Loading(false)
-                  : const HomeScreen();
+                  : Consumer<UserController>(
+                builder: (context,userController,child) {
+                  if (userController.profileStatus == ProfileStatus.nil) {
+                    userController.setUser(
+                        FirebaseAuth.instance.currentUser!.uid);
+                  }
+                  switch (userController.profileStatus) {
+                    case ProfileStatus.nil:
+                      return Center(
+                        child: MaterialButton(
+                          color: darkBlueColor,
+                          onPressed: () {
+                            userController.setUser(FirebaseAuth.instance
+                                .currentUser!.uid);
+                          },
+                          child: const Text(
+                            'Refresh Profile',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      );
+                    case ProfileStatus.loading:
+                      return Loading(false);
+                    case ProfileStatus.fetched:
+                      return const HomeScreen();
+                  }
+                }
+              );
             })
           : const VerifyEmailPage();
     } else {

@@ -4,6 +4,7 @@ import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/model/user_model.dart';
+import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/space_provider.dart';
@@ -16,36 +17,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class UserDetailsScreen extends StatefulWidget {
-  final List<String> initials;
-  final UserModel userModel;
-  const UserDetailsScreen(
-      {Key? key, required this.initials, required this.userModel})
-      : super(key: key);
+  final String uid;
+  const UserDetailsScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<UserDetailsScreen> createState() => _UserDetailsScreenState();
 }
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
-  late UserModel? userModel;
-  late List<String> initials;
-  @override
-  void initState() {
-    // TODO: implement initState
-    userModel = widget.userModel;
-    initials = widget.initials;
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
-    String uName = '';
-    for (int i = 0; i < widget.initials.length; i++) {
-      if (i == widget.initials.length - 1) {
-        uName = '$uName${widget.initials[i]}';
-      } else {
-        uName = '$uName${widget.initials[i]} ';
-      }
-    }
     SpaceProvider spaceProvider = SpaceProvider();
     return SafeArea(
       child: Scaffold(
@@ -75,272 +56,325 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 case ProfileStatus.loading:
                   return Loading(false);
                 case ProfileStatus.fetched:
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: Icon(
-                                CupertinoIcons.arrow_left,
-                                size: displayWidth(context) * 0.08,
-                                color: Colors.white,
-                              ),
-                            ),
-                            spaceProvider.getWidthSpace(context, 0.05),
-                            Text(
-                              uName,
-                              style: GoogleFonts.nunito(
-                                  textStyle: TextStyle(
-                                fontSize: displayWidth(context) * 0.08,
-                                color: Colors.white,
-                              )),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              userModel!.dp.isEmpty
-                                  ? CircleAvatar(
-                                      backgroundColor: Colors.pinkAccent,
-                                      radius: 50,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width:
-                                                  displayWidth(context) * 0.007,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        child: Center(
-                                          child: initials.length > 1
-                                              ? Text(
-                                                  "${initials[0][0]}.${initials[initials.length - 1][0]}"
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Colors.white),
-                                                )
-                                              : Text(
-                                                  initials[0][0],
-                                                  style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Colors.white),
-                                                ),
-                                        ),
-                                      ),
-                                    )
-                                  : CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 50,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          border: Border.all(
-                                            color: darkBlueColor,
-                                            width:
-                                                displayWidth(context) * 0.009,
-                                          ),
-                                        ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width:
-                                                  displayWidth(context) * 0.005,
-                                            ),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            child: CachedNetworkImage(
-                                              imageUrl: userModel!.dp,
-                                              placeholder: (context, url) =>
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Material(
-                                    color: Colors.grey.shade300,
-                                    clipBehavior: Clip.hardEdge,
-                                    elevation: 5,
-                                    shadowColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: CustomIconTextButton(
-                                      buttonName: '',
-                                      iconData: Icons.abc,
-                                      isText: true,
-                                      text: userModel!.followers.length >=
-                                              10
-                                          ? userModel!.followers.length
-                                              .toString()
-                                          : '0${userModel!.followers.length}',
-                                    ),
-                                  ),
-                                  spaceProvider.getHeightSpace(context, 0.01),
-                                  Text(
-                                    'Followers',
-                                    style: GoogleFonts.nunito(
-                                      textStyle: TextStyle(
+                  return FutureBuilder(
+                      future: controller.getUser(widget.uid),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          List<String> initials =
+                              upperCaseConverter(snapshot.data!.name);
+                          String uName = '';
+                          for (int i = 0; i < initials.length; i++) {
+                            if (i == initials.length - 1) {
+                              uName = '$uName${initials[i]}';
+                            } else {
+                              uName = '$uName${initials[i]} ';
+                            }
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon: Icon(
+                                        CupertinoIcons.arrow_left,
+                                        size: displayWidth(context) * 0.08,
                                         color: Colors.white,
-                                        fontSize: displayWidth(context) * 0.04,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Material(
-                                    color: Colors.grey.shade300,
-                                    clipBehavior: Clip.hardEdge,
-                                    elevation: 5,
-                                    shadowColor: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CustomIconTextButton(
-                                      buttonName: '',
-                                      iconData: Icons.abc,
-                                      isText: true,
-                                      text:userModel!.following.length >=
-                                              10
-                                          ? userModel!.followers.length
-                                              .toString()
-                                          : '0${userModel!.following.length}',
-                                    ),
-                                  ),
-                                  spaceProvider.getHeightSpace(context, 0.01),
-                                  Text(
-                                    'Following',
-                                    style: GoogleFonts.nunito(
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: displayWidth(context) * 0.04,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                          child: ProfileDataTile(
-                            dataValue: userModel!.email.toString(),
-                            iconName: gmailIcon,
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              child: ProfileDataTile(
-                                dataValue: userModel!.birthday.isEmpty
-                                    ? '30th Feb'
-                                    : userModel!.birthday.toString(),
-                                iconName: cakeIcon,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              child: ProfileDataTile(
-                                dataValue: userModel!.about.isEmpty
-                                    ? 'I am awesome!'
-                                    : userModel!.about.toString(),
-                                iconName: userIcon,
-                              ),
-                            ),
-                          ],
-                        ),
-                        controller.followingUserStatus ==
-                            FollowingUserStatus.yes
-                            ? const CircularProgressIndicator()
-                            : controller.user!.following
-                            .contains(userModel!.userId)
-                            ? ElevatedButton(
-                          onPressed: () async{
-                            controller.unFollowUser(
-                                userId: userModel!.userId);
-                            userModel = await controller.getUser(userModel!.userId).whenComplete(() {
-                              Navigator.of(context).pop();
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: lightBlueColor,
-                          ),
-                          child: Text(
-                                      'Unfollow',
+                                    spaceProvider.getWidthSpace(context, 0.05),
+                                    Text(
+                                      uName,
                                       style: GoogleFonts.nunito(
-                                        textStyle: TextStyle(
-                                          fontSize:
-                                              displayWidth(context) * 0.04,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                          textStyle: TextStyle(
+                                        fontSize: displayWidth(context) * 0.08,
+                                        color: Colors.white,
+                                      )),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      snapshot.data!.dp.isEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor:
+                                                  Colors.pinkAccent,
+                                              radius: 50,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.white,
+                                                      width: displayWidth(
+                                                              context) *
+                                                          0.007,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                child: Center(
+                                                  child: initials.length > 1
+                                                      ? Text(
+                                                          "${initials[0][0]}.${initials[initials.length - 1][0]}"
+                                                              .toUpperCase(),
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  displayWidth(
+                                                                          context) *
+                                                                      0.12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.white),
+                                                        )
+                                                      : Text(
+                                                          initials[0][0],
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  displayWidth(
+                                                                          context) *
+                                                                      0.12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                ),
+                                              ),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              radius: 50,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  border: Border.all(
+                                                    color: darkBlueColor,
+                                                    width:
+                                                        displayWidth(context) *
+                                                            0.009,
+                                                  ),
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    border: Border.all(
+                                                      color: Colors.white,
+                                                      width: displayWidth(
+                                                              context) *
+                                                          0.005,
+                                                    ),
+                                                  ),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                          snapshot.data!.dp,
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Material(
+                                            color: Colors.grey.shade300,
+                                            clipBehavior: Clip.hardEdge,
+                                            elevation: 5,
+                                            shadowColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: CustomIconTextButton(
+                                              buttonName: '',
+                                              iconData: Icons.abc,
+                                              isText: true,
+                                              text: snapshot.data!.followers
+                                                          .length >=
+                                                      10
+                                                  ? snapshot
+                                                      .data!.followers.length
+                                                      .toString()
+                                                  : '0${snapshot.data!.followers.length}',
+                                            ),
+                                          ),
+                                          spaceProvider.getHeightSpace(
+                                              context, 0.01),
+                                          Text(
+                                            'Followers',
+                                            style: GoogleFonts.nunito(
+                                              textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    displayWidth(context) *
+                                                        0.04,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Material(
+                                            color: Colors.grey.shade300,
+                                            clipBehavior: Clip.hardEdge,
+                                            elevation: 5,
+                                            shadowColor: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CustomIconTextButton(
+                                              buttonName: '',
+                                              iconData: Icons.abc,
+                                              isText: true,
+                                              text: snapshot.data!.following
+                                                          .length >=
+                                                      10
+                                                  ? snapshot
+                                                      .data!.followers.length
+                                                      .toString()
+                                                  : '0${snapshot.data!.following.length}',
+                                            ),
+                                          ),
+                                          spaceProvider.getHeightSpace(
+                                              context, 0.01),
+                                          Text(
+                                            'Following',
+                                            style: GoogleFonts.nunito(
+                                              textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    displayWidth(context) *
+                                                        0.04,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: ProfileDataTile(
+                                    dataValue: snapshot.data!.email.toString(),
+                                    iconName: gmailIcon,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                      child: ProfileDataTile(
+                                        dataValue:
+                                            snapshot.data!.birthday.isEmpty
+                                                ? '30th Feb'
+                                                : snapshot.data!.birthday
+                                                    .toString(),
+                                        iconName: cakeIcon,
                                       ),
                                     ),
-                        ): ElevatedButton(
-                          onPressed: () async{
-                            controller.followUser(
-                                userId: userModel!.userId);
-                            userModel = await controller.getUser(userModel!.userId).whenComplete(() {
-                              Navigator.of(context).pop();
-                            });
-
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: lightBlueColor,
-                          ),
-                          child: Text(
-                            'Follow',
-                            style: GoogleFonts.nunito(
-                              textStyle: TextStyle(
-                                fontSize:
-                                displayWidth(context) * 0.04,
-                                fontWeight: FontWeight.w600,
-                              ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                      child: ProfileDataTile(
+                                        dataValue: snapshot.data!.about.isEmpty
+                                            ? 'I am awesome!'
+                                            : snapshot.data!.about.toString(),
+                                        iconName: userIcon,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                controller.followingUserStatus ==
+                                        FollowingUserStatus.yes
+                                    ? const CircularProgressIndicator()
+                                    : controller.user!.following
+                                            .contains(snapshot.data!.userId)
+                                        ? ElevatedButton(
+                                            onPressed: () {
+                                              controller.unFollowUser(
+                                                  userId:
+                                                      snapshot.data!.userId);
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: lightBlueColor,
+                                            ),
+                                            child: Text(
+                                              'Unfollow',
+                                              style: GoogleFonts.nunito(
+                                                textStyle: TextStyle(
+                                                  fontSize:
+                                                      displayWidth(context) *
+                                                          0.04,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : ElevatedButton(
+                                            onPressed: () async {
+                                              controller.followUser(
+                                                  userId:
+                                                      snapshot.data!.userId);
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: lightBlueColor,
+                                            ),
+                                            child: Text(
+                                              'Follow',
+                                              style: GoogleFonts.nunito(
+                                                textStyle: TextStyle(
+                                                  fontSize:
+                                                      displayWidth(context) *
+                                                          0.04,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                              ],
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+                          );
+                        } else {
+                          return Loading(false);
+                        }
+                      });
               }
             },
           )),

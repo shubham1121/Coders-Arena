@@ -40,8 +40,18 @@ class FeedScreen extends StatelessWidget {
             ),
           );
         case PostsStatus.fetching:
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Column(
+            children: [
+              const CustomisedAppBar(),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return shimmer.shimmerForFeeds(spaceProvider, context);
+                  },
+                ),
+              ),
+            ],
           );
         case PostsStatus.fetched:
           if (postController.feedScreenPosts.isNotEmpty) {
@@ -63,24 +73,11 @@ class FeedScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return Consumer<UserController>(
                           builder: (context, userController, child) {
-                            return FutureBuilder<UserModel?>(
-                                future: userController.getUser(
-                                    postController.feedScreenPosts[index].uid),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      snapshot.hasData) {
-                                    return DesignPost(
-                                      postModel:
-                                          postController.feedScreenPosts[index],
-                                      userModel: snapshot.data!,
-                                    );
-                                  } else {
-                                    debugPrint('else shimmer');
-                                    return shimmer.shimmerForFeeds(
-                                        spaceProvider, context);
-                                  }
-                                });
+                            return DesignPost(
+                                postModel:
+                                    postController.feedScreenPosts[index],
+                                lowDetailUser: userController.allUsers[
+                                    postController.feedScreenPosts[index].uid]);
                           },
                         );
                       },

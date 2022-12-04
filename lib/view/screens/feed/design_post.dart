@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/model/post_model.dart';
-import 'package:coders_arena/model/user_model.dart';
+import 'package:coders_arena/model/search_users_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/space_provider.dart';
@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DesignPost extends StatefulWidget {
-  const DesignPost({Key? key, required this.postModel, required this.userModel})
+  const DesignPost({Key? key, required this.postModel, required this.lowDetailUser})
       : super(key: key);
   final PostModel postModel;
-  final UserModel userModel;
+  final LowDetailUser? lowDetailUser;
 
   @override
   State<DesignPost> createState() => _DesignPostState();
@@ -43,7 +43,7 @@ class _DesignPostState extends State<DesignPost> {
   Widget build(BuildContext context) {
     final spaceProvider = SpaceProvider();
     final User? currentUser = FirebaseAuth.instance.currentUser;
-    List<String> initials = upperCaseConverter(widget.userModel.name);
+    List<String> initials = upperCaseConverter(widget.lowDetailUser!.name);
     String uName = '';
     for (int i = 0; i < initials.length; i++) {
       if (i == initials.length - 1) {
@@ -62,16 +62,16 @@ class _DesignPostState extends State<DesignPost> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             child: GestureDetector(
               onTap: () {
-                if(widget.userModel.userId!= currentUser!.uid)
+                if(widget.lowDetailUser!.userId!= currentUser!.uid)
                   {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return UserDetailsScreen(userModel: widget.userModel,initials: initials);
+                      return  UserDetailsScreen(uid:widget.lowDetailUser!.userId);
                     }));
                   }
               },
               child: Row(
                 children: [
-                  widget.userModel.dp.isEmpty
+                  widget.lowDetailUser!.dp.isEmpty
                       ? CircleAvatar(
                           backgroundColor: Colors.pinkAccent,
                           radius: 20,
@@ -116,7 +116,7 @@ class _DesignPostState extends State<DesignPost> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: CachedNetworkImage(
-                                  imageUrl: widget.userModel.dp,
+                                  imageUrl: widget.lowDetailUser!.dp,
                                   placeholder: (context, url) =>
                                       CircularProgressIndicator(),
                                 ),

@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:coders_arena/controller/disposable_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
+import 'package:coders_arena/model/search_users_model.dart';
 import 'package:coders_arena/model/user_model.dart';
 import 'package:coders_arena/services/api/api_services.dart';
 import 'package:coders_arena/services/firebase_services/firebase_storage_services.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,10 +15,13 @@ import 'package:path/path.dart' as path;
 class UserController extends DisposableProvider {
   final ApiServices _apiServices = ApiServices();
   final ImagePicker _imagePicker = ImagePicker();
+
   ProfileStatus profileStatus = ProfileStatus.nil;
   UserUploadingImage userUploadingImage = UserUploadingImage.notLoading;
   FollowingUserStatus followingUserStatus = FollowingUserStatus.no;
   FetchingMyFollowersAndFollowings fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.nil;
+  FetchingAllUsers fetchingAllUsers = FetchingAllUsers.nil;
+  Map<String, LowDetailUser> allUsers = {};
   UserModel? user;
   List<UserModel> myFollowers = [];
   List<UserModel> myFollowing = [];
@@ -29,6 +32,7 @@ class UserController extends DisposableProvider {
     try {
       final Response? response = await _apiServices.get(apiEndUrl: endUrl);
       if (response != null) {
+        fetchAllUsers();
         user = UserModel.fromJson(response.data);
         fetchFollowersAndFollowing(user!.followers, user!.following);
       }
@@ -66,6 +70,28 @@ class UserController extends DisposableProvider {
       return null;
     }
     return null;
+  }
+
+  fetchAllUsers() async {
+    Map<String, LowDetailUser> allUsersTemp = {};
+    fetchingAllUsers = FetchingAllUsers.fetching;
+    notifyListeners();
+    try {
+      final Response? response =
+      await _apiServices.get(apiEndUrl: 'users.json');
+      if (response != null) {
+        Map<String, dynamic> temp = response.data;
+        for (String uid in temp.keys) {
+          LowDetailUser lowDetailUser = LowDetailUser.fromJson(temp[uid]);
+          allUsersTemp[uid] = lowDetailUser;
+        }
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+    allUsers = allUsersTemp;
+    fetchingAllUsers = FetchingAllUsers.fetched;
+    notifyListeners();
   }
 
    fetchFollowersAndFollowing(List<dynamic> followers, List<dynamic>followings) async{
@@ -289,6 +315,8 @@ class UserController extends DisposableProvider {
     userUploadingImage = UserUploadingImage.notLoading;
     followingUserStatus = FollowingUserStatus.no;
     fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.nil;
+    fetchingAllUsers = FetchingAllUsers.nil;
+    allUsers = {};
     myFollowers = [];
     myFollowing = [];
     user = null;
