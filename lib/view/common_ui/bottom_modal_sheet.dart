@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coders_arena/constants/color_constants.dart';
-import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/controller/my_posts_controller.dart';
-import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/model/post_model.dart';
 import 'package:coders_arena/model/user_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
@@ -140,7 +138,7 @@ class BottomModalSheet {
                                                 child: CachedNetworkImage(
                                                   imageUrl: followers[index].dp,
                                                   placeholder: (context, url) =>
-                                                      CircularProgressIndicator(),
+                                                      const CircularProgressIndicator(),
                                                 ),
                                               ),
                                             ),
@@ -323,7 +321,7 @@ class BottomModalSheet {
                                                 child: CachedNetworkImage(
                                                   imageUrl: following[index].dp,
                                                   placeholder: (context, url) =>
-                                                      CircularProgressIndicator(),
+                                                      const CircularProgressIndicator(),
                                                 ),
                                               ),
                                             ),
@@ -488,7 +486,7 @@ class BottomModalSheet {
                                             imageUrl:
                                                 myPosts[index].imageUrls[0],
                                             placeholder: (context, url) =>
-                                                const CircularProgressIndicator(),
+                                            const SmallLoadingIndicatorForImages(),
                                           ),
                                         ),
                                   spaceProvider.getWidthSpace(context, 0.05),

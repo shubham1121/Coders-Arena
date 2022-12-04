@@ -158,7 +158,7 @@ class CustomisedAppBar extends StatelessWidget {
               ),
             );
           case ProfileStatus.loading:
-            return Loading(false);
+            return const Loading();
           case ProfileStatus.fetched:
             List<String> initials = controller.user!.name.split(" ");
             String firstLetter = "", lastLetter = "";

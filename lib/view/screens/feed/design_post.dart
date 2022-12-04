@@ -4,6 +4,7 @@ import 'package:coders_arena/model/post_model.dart';
 import 'package:coders_arena/model/search_users_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
+import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/user_details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -118,7 +119,7 @@ class _DesignPostState extends State<DesignPost> {
                                 child: CachedNetworkImage(
                                   imageUrl: widget.lowDetailUser!.dp,
                                   placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
+                                      const CircularProgressIndicator(),
                                 ),
                               ),
                             ),
@@ -151,8 +152,8 @@ class _DesignPostState extends State<DesignPost> {
                     fit: BoxFit.fitWidth,
                     width: displayWidth(context),
                     height: displayHeight(context) * 0.5,
-                    // placeholder: (context, url) =>
-                    //     const CircularProgressIndicator(),
+                    placeholder: (context, url) =>
+                    const SmallLoadingIndicatorForImages(),
                   );
                 }),
           ),

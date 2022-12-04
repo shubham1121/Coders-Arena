@@ -22,9 +22,11 @@ class UserController extends DisposableProvider {
   FetchingMyFollowersAndFollowings fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.nil;
   FetchingAllUsers fetchingAllUsers = FetchingAllUsers.nil;
   Map<String, LowDetailUser> allUsers = {};
+
   UserModel? user;
   List<UserModel> myFollowers = [];
   List<UserModel> myFollowing = [];
+  List<LowDetailUser> queryRes = [];
   // set current user
   setUser(String userId) async {
     profileStatus = ProfileStatus.loading;
@@ -40,6 +42,24 @@ class UserController extends DisposableProvider {
       debugPrint(error.toString());
     }
     profileStatus = ProfileStatus.fetched;
+    notifyListeners();
+  }
+
+  searchUser(String prefName)
+  { List<LowDetailUser> temp = [];
+    if(prefName.isEmpty)
+      {
+        queryRes = temp;
+        notifyListeners();
+        return;
+      }
+    for(String uid in allUsers.keys)
+      { if(allUsers[uid]!.name.startsWith(prefName))
+        {
+          temp.add(allUsers[uid]!);
+        }
+      }
+    queryRes = temp;
     notifyListeners();
   }
 

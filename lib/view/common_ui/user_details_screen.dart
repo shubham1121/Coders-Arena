@@ -3,7 +3,6 @@ import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
-import 'package:coders_arena/model/user_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
@@ -54,7 +53,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                     ),
                   );
                 case ProfileStatus.loading:
-                  return Loading(false);
+                  return const Loading();
                 case ProfileStatus.fetched:
                   return FutureBuilder(
                       future: controller.getUser(widget.uid),
@@ -372,7 +371,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             ),
                           );
                         } else {
-                          return Loading(false);
+                          return const Loading();
                         }
                       });
               }

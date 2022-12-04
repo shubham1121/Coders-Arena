@@ -41,36 +41,9 @@ class ContestScreen extends StatelessWidget {
               ),
             );
           case ContestListStatus.fetching:
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Contests',
-                      style: GoogleFonts.nunito(
-                        textStyle: TextStyle(
-                          fontSize: displayWidth(context)*0.09,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 6,
-                    itemBuilder: (context,index){
-                      return shimmer.shimmerForContests(spaceProvider, context);
-                    },
-                  ),
-                ),
-              ],
-            );
-          case ContestListStatus.fetched:
-            if(contestListController.contestList.isNotEmpty){
-              return Column(
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -89,22 +62,55 @@ class ContestScreen extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: contestListController.contestList.length,
+                      itemCount: 6,
                       itemBuilder: (context,index){
-                        return ContestListTile(contestListModel: contestListController.contestList[index]);
+                        return shimmer.shimmerForContests(spaceProvider, context);
                       },
                     ),
                   ),
-                  // Expanded(
-                  //   child: ListView.builder(
-                  //     shrinkWrap: true,
-                  //     itemCount: 6,
-                  //     itemBuilder: (context,index){
-                  //       return shimmer.shimmerForContests(spaceProvider, context);
-                  //     },
-                  //   ),
-                  // ),
                 ],
+              ),
+            );
+          case ContestListStatus.fetched:
+            if(contestListController.contestList.isNotEmpty){
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Contests',
+                          style: GoogleFonts.nunito(
+                            textStyle: TextStyle(
+                              fontSize: displayWidth(context)*0.09,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: contestListController.contestList.length,
+                        itemBuilder: (context,index){
+                          return ContestListTile(contestListModel: contestListController.contestList[index]);
+                        },
+                      ),
+                    ),
+                    // Expanded(
+                    //   child: ListView.builder(
+                    //     shrinkWrap: true,
+                    //     itemCount: 6,
+                    //     itemBuilder: (context,index){
+                    //       return shimmer.shimmerForContests(spaceProvider, context);
+                    //     },
+                    //   ),
+                    // ),
+                  ],
+                ),
               );
             }
             return const Center(

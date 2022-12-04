@@ -1,32 +1,22 @@
+import 'package:coders_arena/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'device_size.dart';
 
 class Loading extends StatelessWidget {
-  bool showStatus = false;
-  Loading(this.showStatus);
+  const Loading({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: darkBlueColor,
       body: Container(
-        color: Colors.white,
-        child: showStatus
-            ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            SpinKitWave(
-              color: Colors.indigo,
-              size: 50.0,
-            ),
-            Text('Upload In Progress!'),
-          ],
-        )
-            : const Center(
-          child: SpinKitWave(
-            color: Colors.indigo,
-            size: 50.0,
+        color: darkBlueColor,
+        child: const Center(
+          child: SpinKitPouringHourGlassRefined(
+            color: Colors.white,
+            size:70.0,
           ),
         ),
       ),
@@ -34,16 +24,18 @@ class Loading extends StatelessWidget {
   }
 }
 
-class smallLoadingIndicatorForImages extends StatelessWidget {
+class SmallLoadingIndicatorForImages extends StatelessWidget {
+  const SmallLoadingIndicatorForImages({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: darkBlueColor,
         child: Center(
-          child: SpinKitSpinningLines(
-            color: Colors.black,
+          child: SpinKitDoubleBounce(
+            color: Colors.white,
             size: displayWidth(context) * 0.20,
-            lineWidth: displayWidth(context) * 0.015,
           ),
         ),
       ),

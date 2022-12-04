@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/constants/image_constants.dart';
-import 'package:coders_arena/controller/my_posts_controller.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
@@ -55,7 +54,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           );
         case ProfileStatus.loading:
           debugPrint('Profile Status Loading');
-          return Loading(false);
+          return const Loading();
         case ProfileStatus.fetched:
           List<String> initials = controller.user!.name.split(" ");
           String firstLetter = "", lastLetter = "";
@@ -225,7 +224,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                               child: CachedNetworkImage(
                                                 imageUrl: controller.user!.dp,
                                                 placeholder: (context, url) =>
-                                                    CircularProgressIndicator(),
+                                                    const CircularProgressIndicator(),
                                               ),
                                             ),
                                           ),

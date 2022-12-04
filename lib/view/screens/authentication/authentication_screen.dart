@@ -54,7 +54,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             builder: (context, controller, child) {
           return controller.authLoginSignupStatus ==
                   AuthLoginSignupStatus.loading
-              ? Loading(false)
+              ? const Loading()
               : Scaffold(
                   backgroundColor: Colors.white,
                   body: controller.loginFormStatus == LoginFormStatus.yes

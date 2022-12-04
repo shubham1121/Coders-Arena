@@ -28,7 +28,7 @@ class AppRoot extends StatelessWidget {
                     builder: (context, controller, child) {
                     return controller.postUploadingStatus ==
                             PostUploadingStatus.uploading
-                        ? Loading(false)
+                        ? const Loading()
                         : const HomeScreen();
                   })
                 : const VerifyEmailPage();
@@ -55,7 +55,7 @@ class _WrapperState extends State<Wrapper> {
               builder: (context, controller, child) {
               return controller.postUploadingStatus ==
                       PostUploadingStatus.uploading
-                  ? Loading(false)
+                  ? const Loading()
                   : Consumer<UserController>(
                 builder: (context,userController,child) {
                   if (userController.profileStatus == ProfileStatus.nil) {
@@ -80,7 +80,7 @@ class _WrapperState extends State<Wrapper> {
                         ),
                       );
                     case ProfileStatus.loading:
-                      return Loading(false);
+                      return const Loading();
                     case ProfileStatus.fetched:
                       return const HomeScreen();
                   }
