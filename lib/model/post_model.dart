@@ -3,12 +3,14 @@ class PostModel {
   String caption;
   List<dynamic> imageUrls;
   int likes;
+  String postId;
 
   PostModel({
     required this.uid,
     required this.caption,
     required this.imageUrls,
     required this.likes,
+    required this.postId,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> data) {
@@ -17,6 +19,7 @@ class PostModel {
       caption: data['caption'] ?? '',
       imageUrls: data['imagesUrls'] ?? [],
       likes: data['likes'] ?? 0,
+      postId : data['postId'] ?? '',
     );
   }
 
@@ -26,6 +29,7 @@ class PostModel {
       'caption': caption,
       'imagesUrls': imageUrls,
       'likes': likes,
+      'postId':postId,
     };
   }
 }

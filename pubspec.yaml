@@ -57,6 +57,7 @@ dependencies:
   cached_network_image: ^3.2.2
   shimmer: ^2.0.0
   intl: ^0.17.0
+  focused_menu: ^1.0.5
 
 dev_dependencies:
   flutter_test:

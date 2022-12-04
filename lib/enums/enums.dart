@@ -19,5 +19,7 @@ enum FollowingUserStatus {yes,no}
 
 enum ContestListStatus{nil, fetching, fetched}
 
+enum FetchingAllUsers {nil,fetching,fetched}
+
 
 // enum FetchingSavedArticles {nil,fetching,fetched}

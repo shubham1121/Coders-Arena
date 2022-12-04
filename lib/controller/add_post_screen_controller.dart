@@ -161,6 +161,7 @@ class AddPostScreenController with ChangeNotifier {
         caption: caption,
         imageUrls: imageUrls,
         likes: 0,
+        postId: '',
       );
       final Response? response = await _apiServices.post(
           apiEndUrl: 'posts/$uid.json', data: post.toJson());

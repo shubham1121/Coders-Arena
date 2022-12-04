@@ -34,7 +34,29 @@ class MyPostsController extends DisposableProvider {
     notifyListeners();
   }
 
+  Future<void> deleteThisArticle(
+      {required String myUid, required String postId}) async {
+    try {
+      // fetchingMyPosts = FetchingMyPosts.fetching;
+      // notifyListeners();
+      final Response? response =
+      await _apiServices.delete(apiEndUrl: 'posts/$myUid/$postId.json');
+      if (response != null) {
+        myPublishedPosts
+            .removeWhere((element) => element.postId== postId);
+      }
+    } catch (error) {
+      // logger.shout(error.toString());
+      debugPrint(error.toString());
+    }
+    // fetchingMyPosts = FetchingMyPosts.fetched;
+    notifyListeners();
+  }
 
   @override
-  void disposeValues() {}
+  void disposeValues() {
+    postUploadingStatus = PostUploadingStatus.notUploading;
+    myPublishedPosts = [];
+    fetchingMyPosts = FetchingMyPosts.nil;
+  }
 }

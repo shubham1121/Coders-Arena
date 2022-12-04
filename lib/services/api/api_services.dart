@@ -110,7 +110,7 @@ class ApiServices {
   }
 
   Future<Response?> delete(
-      {required String apiEndUrl, required Map<String, dynamic> data}) async {
+      {required String apiEndUrl}) async {
     try {
       final Response response =
           await _dio.delete(dotenv.env['apiBaseUrl']! + apiEndUrl);

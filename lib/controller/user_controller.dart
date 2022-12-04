@@ -30,6 +30,7 @@ class UserController extends DisposableProvider {
       final Response? response = await _apiServices.get(apiEndUrl: endUrl);
       if (response != null) {
         user = UserModel.fromJson(response.data);
+        fetchFollowersAndFollowing(user!.followers, user!.following);
       }
     } catch (error) {
       debugPrint(error.toString());
