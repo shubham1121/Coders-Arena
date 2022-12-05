@@ -1,4 +1,4 @@
-# coders_arena
+# Coders Arena
 
 A new Flutter project.
 
