@@ -15,6 +15,9 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Icons Used
+<a href="https://iconscout.com/icons/leetcode" target="_blank">Leetcode Icon</a> by <a href="https://iconscout.com/contributors/icon-54">Icon 54</a> on <a href="https://iconscout.com">IconScout</a>
+
 ## License
 ```
 Copyright © 2022 Coder's Arena
