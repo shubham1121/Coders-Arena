@@ -1,4 +1,4 @@
-# coders_arena
+# Coders Arena
 
 A new Flutter project.
 
@@ -14,6 +14,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Icons Used
+<a href="https://iconscout.com/icons/leetcode" target="_blank">Leetcode Icon</a> by <a href="https://iconscout.com/contributors/icon-54">Icon 54</a> on <a href="https://iconscout.com">IconScout</a>
 
 ## License
 ```
