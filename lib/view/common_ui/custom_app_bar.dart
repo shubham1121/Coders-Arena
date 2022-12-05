@@ -80,7 +80,7 @@ class CustomisedAppBar extends StatelessWidget {
                             ),
                             elevation: 10,
                             duration: const Duration(milliseconds: 600),
-                            width: displayWidth(context) * 0.33,
+                            width: displayWidth(context) * 0.35,
                             behavior: SnackBarBehavior.floating,
                             backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
@@ -112,7 +112,7 @@ class CustomisedAppBar extends StatelessWidget {
                             ),
                             elevation: 10,
                             duration: const Duration(milliseconds: 600),
-                            width: displayWidth(context) * 0.33,
+                            width: displayWidth(context) * 0.35,
                             behavior: SnackBarBehavior.floating,
                             backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(

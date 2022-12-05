@@ -10,13 +10,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     navigateToHome();
   }
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -28,17 +28,25 @@ class _SplashScreenState extends State<SplashScreen> {
   navigateToHome() async {
     if (mounted) {
       final navigator = Navigator.of(context);
-      await Future.delayed(const Duration(seconds: 6));
+      await Future.delayed(const Duration(seconds: 2));
       navigator.pushReplacementNamed('/appRoot');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       backgroundColor: darkBlueColor,
-      body: Center(
-        child: Image.asset(splashScreenGif),
+      body: Column(
+        children: [
+          Expanded(
+            child: Image.asset(
+              splashScreenGif,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
       ),
     ));
   }

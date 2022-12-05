@@ -12,7 +12,7 @@ class FeedScreenController extends DisposableProvider {
   String? myUid = FirebaseAuth.instance.currentUser!.uid;
 
   // Map<String, List<PostModel>> feedScreenPosts = {};
-     List<PostModel> feedScreenPosts = [];
+  List<PostModel> feedScreenPosts = [];
 
   Future<void> fetchPosts() async {
     debugPrint('called here but why');
@@ -37,10 +37,12 @@ class FeedScreenController extends DisposableProvider {
           Map<String, dynamic> mapPosts = postByOtherUsers[userId];
           debugPrint(mapPosts.length.toString());
           for (var postId in mapPosts.keys) {
-            debugPrint(mapPosts[postId].toString());
+            // debugPrint(mapPosts[postId].toString());
             PostModel postModel = PostModel.fromJson(mapPosts[postId]);
             fetchedPost.add(postModel);
           }
+          fetchedPost.sort((first, second) =>
+              second.postsCreated.compareTo(first.postsCreated));
         }
       }
     } catch (error) {

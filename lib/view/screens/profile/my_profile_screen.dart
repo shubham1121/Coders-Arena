@@ -4,6 +4,7 @@ import 'package:coders_arena/constants/image_constants.dart';
 import 'package:coders_arena/controller/user_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
+import 'package:coders_arena/utils/all_providers.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/my_posts_helper.dart';
@@ -141,6 +142,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                         ),
                                         child: InkWell(
                                           onTap: () {
+                                            final navigator = Navigator.of(context);
+                                            AppProviders.disposeAllDisposableProviders(context);
                                             authService.logout(currentUser);
                                           },
                                           child: const CustomIconTextButton(
@@ -310,7 +313,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   ],
                                 ),
                                 //My Posts
-                                MyPostsHelper(uid: controller.user!.userId),
+                                MyPostsHelper(uid: controller.user!.userId,toFetch: true),
                                 Column(
                                   children: [
                                     Material(

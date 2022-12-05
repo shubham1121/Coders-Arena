@@ -22,7 +22,6 @@ class UserController extends DisposableProvider {
   FetchingMyFollowersAndFollowings fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.nil;
   FetchingAllUsers fetchingAllUsers = FetchingAllUsers.nil;
   Map<String, LowDetailUser> allUsers = {};
-
   UserModel? user;
   List<UserModel> myFollowers = [];
   List<UserModel> myFollowing = [];
@@ -69,6 +68,7 @@ class UserController extends DisposableProvider {
       final Response? response = await _apiServices.put(
           apiEndUrl: 'users/${newUser.userId}.json', data: newUser.toJson());
       if (response != null) {
+        debugPrint("user created successfully");
         user = newUser;
       }
     } catch (error) {
@@ -118,6 +118,7 @@ class UserController extends DisposableProvider {
     List<UserModel> followersList= [];
     List<UserModel> followingList= [];
     try{
+      debugPrint('fetching followers');
       fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.fetching;
       notifyListeners();
       for( var uid in followers)
@@ -142,6 +143,8 @@ class UserController extends DisposableProvider {
     }
     myFollowers = followersList;
     myFollowing = followingList;
+    debugPrint(myFollowers.toString());
+    debugPrint(myFollowing.toString());
     fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.fetched;
     notifyListeners();
   }

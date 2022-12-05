@@ -29,7 +29,36 @@ class AppRoot extends StatelessWidget {
                     return controller.postUploadingStatus ==
                             PostUploadingStatus.uploading
                         ? const Loading()
-                        : const HomeScreen();
+                        : Consumer<UserController>(
+                        builder: (context,userController,child) {
+                          if (userController.profileStatus == ProfileStatus.nil) {
+                            userController.setUser(
+                                FirebaseAuth.instance.currentUser!.uid);
+                          }
+                          switch (userController.profileStatus) {
+                            case ProfileStatus.nil:
+                              return Center(
+                                child: MaterialButton(
+                                  color: darkBlueColor,
+                                  onPressed: () {
+                                    userController.setUser(FirebaseAuth.instance
+                                        .currentUser!.uid);
+                                  },
+                                  child: const Text(
+                                    'Refresh Profile',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            case ProfileStatus.loading:
+                              return const Loading();
+                            case ProfileStatus.fetched:
+                              return const HomeScreen();
+                          }
+                        }
+                    );
                   })
                 : const VerifyEmailPage();
       },

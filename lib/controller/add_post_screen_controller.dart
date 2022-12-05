@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'package:coders_arena/controller/disposable_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/model/post_model.dart';
 import 'package:coders_arena/services/api/api_services.dart';
@@ -10,9 +11,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddPostScreenController with ChangeNotifier {
+class AddPostScreenController extends DisposableProvider {
   PostUploadingStatus postUploadingStatus = PostUploadingStatus.notUploading;
-  final List<File> uploadImages = [];
+  List<File> uploadImages = [];
   final ImagePicker _imagePicker = ImagePicker();
   final ApiServices _apiServices = ApiServices();
 
@@ -32,6 +33,7 @@ class AddPostScreenController with ChangeNotifier {
     'competitive',
     'programming',
     'contest',
+    'contests',
     'google',
     'amazon',
     'facebook',
@@ -99,7 +101,7 @@ class AddPostScreenController with ChangeNotifier {
         word = word.substring(0, word.length - 1);
       }
       debugPrint(word);
-      if (captionKeywordsSet.contains(word)) {
+      if (captionKeywordsSet.contains(word.toLowerCase())) {
         matchedWords++;
       }
     }
@@ -149,12 +151,14 @@ class AddPostScreenController with ChangeNotifier {
     postUploadingStatus = PostUploadingStatus.uploading;
     notifyListeners();
     try {
+      debugPrint('Trying upload images');
       List<String?> imageUrls = [];
       for (File img in uploadImages) {
         String? url = await getImageUrl(
             img, 'post/$uid/images/${path.basename(img.path)}');
         imageUrls.add(url);
       }
+      debugPrint('upload images completed');
       uploadImages.clear();
       PostModel post = PostModel(
         uid: uid,
@@ -162,10 +166,11 @@ class AddPostScreenController with ChangeNotifier {
         imageUrls: imageUrls,
         likes: 0,
         postId: '',
+        postsCreated: DateTime.now().toString(),
       );
       final Response? response = await _apiServices.post(
           apiEndUrl: 'posts/$uid.json', data: post.toJson());
-
+      debugPrint('Post created ${response!.statusCode.toString()}');
       if (response != null) {
         final String postId = response.data['name'];
         await _apiServices.update(
@@ -179,5 +184,11 @@ class AddPostScreenController with ChangeNotifier {
     }
     postUploadingStatus = PostUploadingStatus.notUploading;
     notifyListeners();
+  }
+
+  @override
+  void disposeValues(){
+    postUploadingStatus = PostUploadingStatus.notUploading;
+    uploadImages = [];
   }
 }

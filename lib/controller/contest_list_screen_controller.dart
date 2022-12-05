@@ -1,10 +1,11 @@
+import 'package:coders_arena/controller/disposable_controller.dart';
 import 'package:coders_arena/enums/enums.dart';
 import 'package:coders_arena/model/contest_list_model.dart';
 import 'package:coders_arena/services/api/api_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class ContestListScreenController with ChangeNotifier{
+class ContestListScreenController extends DisposableProvider{
   ContestListStatus contestListStatus = ContestListStatus.nil;
   final ApiServices _apiServices = ApiServices();
 
@@ -69,6 +70,10 @@ class ContestListScreenController with ChangeNotifier{
     notifyListeners();
   }
 
-
+  @override
+  void disposeValues() {
+    contestListStatus = ContestListStatus.nil;
+    contestList = [];
+  }
 
 }

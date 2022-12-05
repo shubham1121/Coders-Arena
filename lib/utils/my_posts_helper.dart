@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 
 class MyPostsHelper extends StatefulWidget {
   final String uid;
-  const MyPostsHelper({Key? key, required this.uid}) : super(key: key);
+  bool toFetch;
+  MyPostsHelper({Key? key, required this.uid,required this.toFetch}) : super(key: key);
 
   @override
   State<MyPostsHelper> createState() => _MyPostsHelperState();
@@ -22,7 +23,8 @@ class _MyPostsHelperState extends State<MyPostsHelper> {
   Widget build(BuildContext context) {
     return Consumer<MyPostsController>(
         builder: (context, myPostController, child) {
-      if (myPostController.fetchingMyPosts == FetchingMyPosts.nil) {
+      if (myPostController.fetchingMyPosts == FetchingMyPosts.nil || widget.toFetch ) {
+        widget.toFetch = false;
         myPostController.fetchMyPosts(widget.uid);
       }
       switch (myPostController.fetchingMyPosts) {

@@ -1,6 +1,7 @@
+import 'package:coders_arena/controller/disposable_controller.dart';
 import 'package:flutter/material.dart';
 
-class VerifyEmailScreenController with ChangeNotifier{
+class VerifyEmailScreenController extends DisposableProvider{
   bool isMailSent = false;
   bool canResendEmail = true;
 
@@ -17,6 +18,12 @@ class VerifyEmailScreenController with ChangeNotifier{
 
   void sendOnce(){
     isMailSent = true;
+  }
+
+  @override
+  void disposeValues() {
+    canResendEmail = true;
+    isMailSent = false;
   }
 
 }

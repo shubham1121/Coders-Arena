@@ -5,7 +5,7 @@ import 'package:coders_arena/services/api/api_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class AllUsers extends DisposableProvider {
+class AllUsersController extends DisposableProvider {
   final ApiServices _apiServices = ApiServices();
   FetchingAllUsers fetchingAllUsers = FetchingAllUsers.nil;
   Map<String, LowDetailUser> allUsers = {};

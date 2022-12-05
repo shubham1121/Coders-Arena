@@ -54,8 +54,8 @@ class BottomModalSheet {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
+                      // physics: const BouncingScrollPhysics(
+                      //     parent: AlwaysScrollableScrollPhysics()),
                       controller: controller,
                       shrinkWrap: true,
                       itemCount: followers.length,
@@ -241,6 +241,7 @@ class BottomModalSheet {
                   ),
                   Expanded(
                     child: ListView.builder(
+                      controller: controller,
                       itemCount: following.length,
                       itemBuilder: (context, index) {
                         List<String> initials =

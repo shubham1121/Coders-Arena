@@ -14,7 +14,7 @@ class Loading extends StatelessWidget {
       body: Container(
         color: darkBlueColor,
         child: const Center(
-          child: SpinKitPouringHourGlassRefined(
+          child: SpinKitDoubleBounce(
             color: Colors.white,
             size:70.0,
           ),
@@ -33,9 +33,9 @@ class SmallLoadingIndicatorForImages extends StatelessWidget {
       body: Container(
         color: darkBlueColor,
         child: Center(
-          child: SpinKitDoubleBounce(
+          child: SpinKitThreeBounce(
             color: Colors.white,
-            size: displayWidth(context) * 0.20,
+            size: displayWidth(context) * 0.05,
           ),
         ),
       ),

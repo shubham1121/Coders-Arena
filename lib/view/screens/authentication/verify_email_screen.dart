@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/controller/verify_email_screen_controller.dart';
 import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/space_provider.dart';
-import 'package:coders_arena/view/common_ui/custom_app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class VerifyEmailPage extends StatefulWidget {
@@ -22,9 +23,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
+    SpaceProvider spaceProvider = SpaceProvider();
     return SafeArea(child: Consumer<VerifyEmailScreenController>(
         builder: (context, controller, child) {
       return Scaffold(
+        backgroundColor: darkBlueColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
@@ -33,6 +36,17 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Text(
+                    'Verification',
+                    style: GoogleFonts.nunito(
+                      textStyle: TextStyle(
+                        fontSize: displayWidth(context) * 0.09,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  spaceProvider.getHeightSpace(context, 0.06),
                   // const CustomisedAppBar(mainHeading: 'Coder\'s Arena', subHeading: '', isProfileSection: false),
                   controller.isMailSent
                       ? Text(
@@ -51,7 +65,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             color: Colors.blue,
                           ),
                         ),
-                  spaceProvider.getHeightSpace(context, 0.09),
+                  spaceProvider.getHeightSpace(context, 0.04),
                   controller.canResendEmail
                       ? ElevatedButton.icon(
                           onPressed: () {

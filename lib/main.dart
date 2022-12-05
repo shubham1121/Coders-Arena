@@ -1,4 +1,5 @@
 import 'package:coders_arena/controller/add_post_screen_controller.dart';
+import 'package:coders_arena/controller/all_users_controller.dart';
 import 'package:coders_arena/controller/authentication_screen_controller.dart';
 import 'package:coders_arena/controller/contest_list_screen_controller.dart';
 import 'package:coders_arena/controller/feed_screen_controller.dart';
@@ -9,9 +10,8 @@ import 'package:coders_arena/services/firebase_services/firebase_auth.dart';
 import 'package:coders_arena/services/firebase_services/firebase_user_service.dart';
 import 'package:coders_arena/utils/wrapper.dart';
 import 'package:coders_arena/view/screens/authentication/authentication_screen.dart';
-import 'package:coders_arena/view/screens/feed/all_upload_images_view.dart';
 import 'package:coders_arena/view/screens/home/home_screen.dart';
-import 'package:coders_arena/view/screens/profile/edit_profile.dart';
+import 'package:coders_arena/view/screens/home/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -72,6 +72,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => MyPostsController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => AllUsersController(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -81,7 +84,7 @@ class MyApp extends StatelessWidget {
           '/homeScreen': (context) => const HomeScreen(),
         },
         debugShowCheckedModeBanner: false,
-        home: const AppRoot(),
+        home: const SplashScreen(),
       ),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/model/contest_list_model.dart';
 import 'package:coders_arena/utils/device_size.dart';
+import 'package:coders_arena/utils/icons_decider.dart';
+import 'package:coders_arena/utils/space_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,6 +13,7 @@ class ContestListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SpaceProvider spaceProvider = SpaceProvider();
     List<String> host = contestListModel.host.split(".");
     host[0] = host[0].characters.first.toUpperCase() +
         host[0].substring(1, host[0].length);
@@ -19,7 +22,7 @@ class ContestListTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.lightBlue,
+          color: Colors.grey.shade400,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
@@ -28,12 +31,29 @@ class ContestListTile extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Image(
+                        width: displayWidth(context)*0.06,
+                        height: displayWidth(context)*0.06,
+                        image: AssetImage(contestHostIcons[host[0]]!),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  spaceProvider.getWidthSpace(context, 0.03),
                   Text(
                     host[0],
                     style: GoogleFonts.nunito(
-                      fontSize: displayWidth(context) * 0.08,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                      fontSize: displayWidth(context) * 0.085,
+                      color: darkBlueColor,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -45,7 +65,7 @@ class ContestListTile extends StatelessWidget {
                       contestListModel.event,
                       style: GoogleFonts.nunito(
                         fontSize: displayWidth(context) * 0.06,
-                        color: Colors.white,
+                        color: darkBlueColor,
                       ),
                     ),
                   ),
@@ -61,21 +81,21 @@ class ContestListTile extends StatelessWidget {
                         'Start',
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                       Text(
                         contestListModel.contestStartDate,
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                       Text(
                         contestListModel.startTime,
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                     ],
@@ -87,28 +107,29 @@ class ContestListTile extends StatelessWidget {
                         'Duration',
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
-                      contestListModel.duration > 100 ? Text(
-                        '100 +',
-                        style: GoogleFonts.nunito(
-                          fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
-                        ),
-                      ) :
-                      Text(
-                        contestListModel.duration.toString(),
-                        style: GoogleFonts.nunito(
-                          fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
-                        ),
-                      ),
+                      contestListModel.duration > 100
+                          ? Text(
+                              '100 +',
+                              style: GoogleFonts.nunito(
+                                fontSize: displayWidth(context) * 0.04,
+                                color: darkBlueColor,
+                              ),
+                            )
+                          : Text(
+                              contestListModel.duration.toString(),
+                              style: GoogleFonts.nunito(
+                                fontSize: displayWidth(context) * 0.04,
+                                color: darkBlueColor,
+                              ),
+                            ),
                       Text(
                         'hours',
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                     ],
@@ -120,21 +141,21 @@ class ContestListTile extends StatelessWidget {
                         'End',
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                       Text(
                         contestListModel.contestEndDate,
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                       Text(
                         contestListModel.endTime,
                         style: GoogleFonts.nunito(
                           fontSize: displayWidth(context) * 0.04,
-                          color: Colors.white,
+                          color: darkBlueColor,
                         ),
                       ),
                     ],
