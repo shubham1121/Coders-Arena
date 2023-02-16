@@ -95,10 +95,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: userController.queryRes.isEmpty
                     ? Center(
                         child: Text(
-                          'No user found!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: displayWidth(context) * 0.06,
+                          'No User Found',
+                          style: GoogleFonts.nunito(
+                            textStyle: TextStyle(
+                              fontSize: displayWidth(context) * 0.05,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey.shade500,
+                            ),
                           ),
                         ),
                       )
@@ -118,7 +121,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                 uName = '$uName${initials[i]} ';
                               }
                             }
-
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 10),
