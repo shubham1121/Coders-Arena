@@ -1,12 +1,10 @@
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/controller/user_controller.dart';
-import 'package:coders_arena/model/search_users_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/shimmer.dart';
 import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/user_details_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +22,12 @@ class _SearchScreenState extends State<SearchScreen> {
     final Shimmer shimmer = Shimmer();
     final SpaceProvider spaceProvider = SpaceProvider();
     final TextEditingController searchQuery = TextEditingController();
-
+    bool shouldEmpty = true;
     return Consumer<UserController>(
       builder: (context, userController, child) {
+        if(shouldEmpty) {
+          userController.queryRes.clear();
+        }
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
@@ -48,8 +49,13 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               spaceProvider.getHeightSpace(context, 0.03),
               TextFormField(
+                // onTap: () {
+                //   debugPrint('Trying to call');
+                //   userController.searchUser(searchQuery.text.toLowerCase());
+                // },
                 onChanged: (value) {
                   debugPrint('Trying to call');
+                  shouldEmpty = false;
                   userController.searchUser(value.toLowerCase());
                 },
                 style: TextStyle(
