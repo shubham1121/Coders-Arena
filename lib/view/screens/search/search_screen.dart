@@ -17,12 +17,20 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final Shimmer shimmer = Shimmer();
+  final SpaceProvider spaceProvider = SpaceProvider();
+  final TextEditingController searchQuery = TextEditingController();
+  bool shouldEmpty = true;
+
+  @override
+  void dispose() {
+    searchQuery.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Shimmer shimmer = Shimmer();
-    final SpaceProvider spaceProvider = SpaceProvider();
-    final TextEditingController searchQuery = TextEditingController();
-    bool shouldEmpty = true;
+
     return Consumer<UserController>(
       builder: (context, userController, child) {
         if(shouldEmpty) {
@@ -49,10 +57,6 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               spaceProvider.getHeightSpace(context, 0.03),
               TextFormField(
-                // onTap: () {
-                //   debugPrint('Trying to call');
-                //   userController.searchUser(searchQuery.text.toLowerCase());
-                // },
                 onChanged: (value) {
                   debugPrint('Trying to call');
                   shouldEmpty = false;
@@ -66,6 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 controller: searchQuery,
                 cursorColor: darkBlueColor,
                 keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   // focusColor: Colors.white,
@@ -134,6 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 onTap: () {
                                   if (userController.user!.userId !=
                                       userController.queryRes[index].userId) {
+                                    // searchQuery.clear();
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return UserDetailsScreen(

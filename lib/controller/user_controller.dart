@@ -23,8 +23,8 @@ class UserController extends DisposableProvider {
   FetchingAllUsers fetchingAllUsers = FetchingAllUsers.nil;
   Map<String, LowDetailUser> allUsers = {};
   UserModel? user;
-  List<UserModel> myFollowers = [];
-  List<UserModel> myFollowing = [];
+  List<LowDetailUser> myFollowers = [];
+  List<LowDetailUser> myFollowing = [];
   List<LowDetailUser> queryRes = [];
   // set current user
   setUser(String userId) async {
@@ -33,9 +33,12 @@ class UserController extends DisposableProvider {
     try {
       final Response? response = await _apiServices.get(apiEndUrl: endUrl);
       if (response != null) {
-        fetchAllUsers();
-        user = UserModel.fromJson(response.data);
-        fetchFollowersAndFollowing(user!.followers, user!.following);
+        fetchAllUsers().whenComplete(() {
+          user = UserModel.fromJson(response.data);
+          fetchFollowersAndFollowing(user!.followers, user!.following);
+        });
+        // user = UserModel.fromJson(response.data);
+        // fetchFollowersAndFollowing(user!.followers, user!.following);
       }
     } catch (error) {
       debugPrint(error.toString());
@@ -43,7 +46,7 @@ class UserController extends DisposableProvider {
     profileStatus = ProfileStatus.fetched;
     notifyListeners();
   }
-
+  // search user
   searchUser(String prefName)
   { List<LowDetailUser> temp = [];
     if(prefName.isEmpty)
@@ -115,32 +118,48 @@ class UserController extends DisposableProvider {
   }
 
    fetchFollowersAndFollowing(List<dynamic> followers, List<dynamic>followings) async{
-    List<UserModel> followersList= [];
-    List<UserModel> followingList= [];
-    try{
+    List<LowDetailUser> followersList= [];
+    List<LowDetailUser> followingList= [];
+    try {
       debugPrint('fetching followers');
-      fetchingMyFollowersAndFollowings = FetchingMyFollowersAndFollowings.fetching;
-      notifyListeners();
-      for( var uid in followers)
+      debugPrint(allUsers.toString());
+      fetchingMyFollowersAndFollowings =
+          FetchingMyFollowersAndFollowings.fetching;
+      for(var uid in followers)
         {
-          final response = await _apiServices.get(apiEndUrl: 'users/$uid.json');
-          if(response!=null)
-            {
-              followersList.add(UserModel.fromJson(response.data));
-            }
+          debugPrint(allUsers[uid]!.name);
+          followersList.add(allUsers[uid]!);
         }
-      for( var uid in followings)
-      {
-        final response = await _apiServices.get(apiEndUrl: 'users/$uid.json');
-        if(response!=null)
-        {
-          followingList.add(UserModel.fromJson(response.data));
-        }
+      for(var uid in followings)
+      { debugPrint(uid);
+        followingList.add(allUsers[uid]!);
       }
-    } catch (error)
-    {
+    } catch (error) {
       debugPrint(error.toString());
     }
+    //   notifyListeners();
+    //   for( var uid in followers)
+    //     {
+    //       final response = await _apiServices.get(apiEndUrl: 'users/$uid.json');
+    //       if(response!=null)
+    //         {
+    //           followersList.add(UserModel.fromJson(response.data));
+    //         }
+    //     }
+    //   for( var uid in followings)
+    //   {
+    //     final response = await _apiServices.get(apiEndUrl: 'users/$uid.json');
+    //     if(response!=null)
+    //     {
+    //       followingList.add(UserModel.fromJson(response.data));
+    //     }
+    //   }
+    // } catch (error)
+    // {
+    //   debugPrint(error.toString());
+    // }
+    // myFollowers = followersList;
+    // myFollowing = followingList;
     myFollowers = followersList;
     myFollowing = followingList;
     debugPrint(myFollowers.toString());
@@ -211,27 +230,35 @@ class UserController extends DisposableProvider {
     await Future.delayed(const Duration(milliseconds: 1));
     notifyListeners();
     try {
-      UserModel? userToFollow = await getUser(userId); // get user by user id
+      UserModel? userToFollow = await getUser(userId).catchError((error) {
+        debugPrint("$error getting user data error");
+      }); // get user by user id
       if (userToFollow != null) {
         List<dynamic> followers =
             userToFollow.followers; // get their followers.
         followers.add(user!.userId); // increase their followers locally.
         // update their profile to the server.
         await _apiServices.update(
-            apiEndUrl: 'users/$userId.json', data: {'followers': followers});
+            apiEndUrl: 'users/$userId.json', data: {'followers': followers}).catchError((error) {
+          debugPrint("$error updating followers list error");
+        });
         // update currently signed in user's profile (increase following list first)
-        List<dynamic> myFollowings = user!.following;
+        List<dynamic> currentUserFollowing = user!.following;
         // increase my following locally.
-        myFollowings.add(userId);
+        currentUserFollowing.add(userId);
         // update following list to my profile (server)
         await _apiServices.update(
             apiEndUrl: 'users/${user!.userId}.json',
-            data: {'following': myFollowings});
-        user!.following = myFollowings;
+            data: {'following': currentUserFollowing}).catchError((error) {
+              debugPrint("$error updating following list error");
+        });
+        user!.following = currentUserFollowing;
+        fetchFollowersAndFollowing(followers, currentUserFollowing);
         // notifyUserWhenFollowedUser(user!.userId, userId);
       }
     } catch (error) {
       // logger.shout(error.toString());
+      debugPrint('$error follow user function error');
     }
 
     followingUserStatus = FollowingUserStatus.no;
@@ -255,14 +282,15 @@ class UserController extends DisposableProvider {
         await _apiServices.update(
             apiEndUrl: 'users/$userId.json', data: {'followers': followers});
         // update currently signed in user's profile (increase following list first)
-        List<dynamic> myFollowings = user!.following;
+        List<dynamic> currentUserFollowing = user!.following;
         // increase my following locally.
-        myFollowings.remove(userId);
+        currentUserFollowing.remove(userId);
         // update following list to my profile (server)
         await _apiServices.update(
             apiEndUrl: 'users/${user!.userId}.json',
-            data: {'following': myFollowings});
-        user!.following = myFollowings;
+            data: {'following': currentUserFollowing});
+        user!.following = currentUserFollowing;
+        fetchFollowersAndFollowing(followers, currentUserFollowing);
       }
     } catch (error) {
       // logger.shout(error.toString());

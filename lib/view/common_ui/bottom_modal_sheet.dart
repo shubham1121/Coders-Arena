@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/controller/my_posts_controller.dart';
 import 'package:coders_arena/model/post_model.dart';
+import 'package:coders_arena/model/search_users_model.dart';
 import 'package:coders_arena/model/user_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
@@ -25,7 +26,7 @@ class BottomModalSheet {
       );
 
   Widget buildSheetForFollowers(
-      BuildContext context, List<UserModel> followers) {
+      BuildContext context, List<LowDetailUser> followers) {
     final spaceProvider = SpaceProvider();
     return makeDismissible(
       context: context,
@@ -212,7 +213,7 @@ class BottomModalSheet {
   }
 
   Widget buildSheetForFollowing(
-      BuildContext context, List<UserModel> following) {
+      BuildContext context, List<LowDetailUser> following) {
     final spaceProvider = SpaceProvider();
     return makeDismissible(
       context: context,

@@ -528,6 +528,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             color: darkBlueColor,
                                           ),
                                           autofocus: false,
+                                          keyboardType: TextInputType.name,
+                                          textCapitalization: TextCapitalization.words,
                                           controller: userFullName,
                                           cursorColor: darkBlueColor,
                                           validator: (value) {

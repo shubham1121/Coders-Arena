@@ -30,3 +30,9 @@ String dateConverter(int day, int month) {
   }
   return res;
 }
+
+int daysBetween(DateTime from, DateTime to) {
+  from = DateTime(from.year, from.month, from.day);
+  to = DateTime(to.year, to.month, to.day);
+  return (from.difference(to).inHours / 24).round();
+}
