@@ -9,6 +9,7 @@ import 'package:coders_arena/utils/loading.dart';
 import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/custom_icon_text_button.dart';
 import 'package:coders_arena/view/common_ui/profile_data_tile.dart';
+import 'package:coders_arena/view/screens/chat/message_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +28,14 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     SpaceProvider spaceProvider = SpaceProvider();
+    final String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
     return SafeArea(
       child: Scaffold(
           backgroundColor: darkBlueColor,
           body: Consumer<UserController>(
             builder: (context, controller, child) {
               if (controller.profileStatus == ProfileStatus.nil) {
-                controller.setUser(FirebaseAuth.instance.currentUser!.uid);
+                controller.setUser(currentUserUid);
               }
               switch (controller.profileStatus) {
                 case ProfileStatus.nil:
@@ -41,8 +43,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                     child: MaterialButton(
                       color: darkBlueColor,
                       onPressed: () {
-                        controller
-                            .setUser(FirebaseAuth.instance.currentUser!.uid);
+                        controller.setUser(currentUserUid);
                       },
                       child: const Text(
                         'Refresh Profile',
@@ -197,6 +198,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                                     ],
                                   ),
                                 ),
+                                //followers and following counts
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 20),
@@ -283,6 +285,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                                     ],
                                   ),
                                 ),
+                                //profile data
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -318,55 +321,126 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                                     ),
                                   ],
                                 ),
-                                controller.followingUserStatus ==
-                                        FollowingUserStatus.yes
-                                    ? const CircularProgressIndicator()
-                                    : controller.user!.following
-                                            .contains(snapshot.data!.userId)
-                                        ? ElevatedButton(
-                                            onPressed: () {
-                                              controller.unFollowUser(
-                                                  userId:
-                                                      snapshot.data!.userId);
-                                              Navigator.of(context).pop();
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: lightBlueColor,
-                                            ),
-                                            child: Text(
-                                              'Unfollow',
-                                              style: GoogleFonts.nunito(
-                                                textStyle: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                  fontWeight: FontWeight.w600,
+                                Row(
+                                  children: [
+                                    controller.followingUserStatus ==
+                                            FollowingUserStatus.yes
+                                        ? const CircularProgressIndicator()
+                                        : controller.user!.following
+                                                .contains(snapshot.data!.userId)
+                                            ? Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        controller.unFollowUser(
+                                                            userId: snapshot
+                                                                .data!.userId);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            lightBlueColor,
+                                                      ),
+                                                      child: Text(
+                                                        'Unfollow',
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          textStyle: TextStyle(
+                                                            fontSize:
+                                                                displayWidth(
+                                                                        context) *
+                                                                    0.04,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  MessageScreen(
+                                                                    recieverId:
+                                                                        widget
+                                                                            .uid,
+                                                                    senderId:
+                                                                        currentUserUid,
+                                                                  )),
+                                                        );
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            lightBlueColor,
+                                                      ),
+                                                      child: Text(
+                                                        'Message',
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          textStyle: TextStyle(
+                                                            fontSize:
+                                                                displayWidth(
+                                                                        context) *
+                                                                    0.04,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
-                                              ),
-                                            ),
-                                          )
-                                        : ElevatedButton(
-                                            onPressed: () async {
-                                              controller.followUser(
-                                                  userId:
-                                                      snapshot.data!.userId);
-                                              Navigator.of(context).pop();
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: lightBlueColor,
-                                            ),
-                                            child: Text(
-                                              'Follow',
-                                              style: GoogleFonts.nunito(
-                                                textStyle: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                  fontWeight: FontWeight.w600,
+                                              )
+                                            : Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      onPressed: () async {
+                                                        controller.followUser(
+                                                            userId: snapshot
+                                                                .data!.userId);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            lightBlueColor,
+                                                      ),
+                                                      child: Text(
+                                                        'Follow',
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          textStyle: TextStyle(
+                                                            fontSize:
+                                                                displayWidth(
+                                                                        context) *
+                                                                    0.04,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ),
-                                          )
+                                              )
+                                  ],
+                                ),
                               ],
                             ),
                           );

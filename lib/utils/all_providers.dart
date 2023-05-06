@@ -19,7 +19,6 @@ class AppProviders {
       Provider.of<AddPostScreenController>(context, listen: false),
       Provider.of<UserController>(context, listen: false),
       Provider.of<AllUsersController>(context, listen: false),
-      Provider.of<AuthScreenController>(context, listen: false),
       Provider.of<ContestListScreenController>(context, listen: false),
       Provider.of<FeedScreenController>(context, listen: false),
       Provider.of<VerifyEmailScreenController>(context, listen: false),

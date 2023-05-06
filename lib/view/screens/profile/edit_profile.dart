@@ -52,6 +52,14 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   @override
+  void dispose() {
+    fullNameController.dispose();
+    aboutController.dispose();
+    birthdayController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final spaceProvider = SpaceProvider();
     final updateProfileForm = GlobalKey<FormState>();
@@ -241,6 +249,8 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   textAlignVertical: TextAlignVertical.top,
                                   textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.name,
+                                  textCapitalization: TextCapitalization.words,
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 8),
@@ -286,6 +296,8 @@ class _EditProfileState extends State<EditProfile> {
                                     fontWeight: FontWeight.w300,
                                     color: Colors.white,
                                   ),
+                                  keyboardType: TextInputType.multiline,
+                                  textCapitalization: TextCapitalization.sentences,
                                   textAlignVertical: TextAlignVertical.top,
                                   textAlign: TextAlign.start,
                                   minLines: 1,

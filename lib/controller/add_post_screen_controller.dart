@@ -10,13 +10,13 @@ import 'package:coders_arena/services/firebase_services/firebase_storage_service
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class AddPostScreenController extends DisposableProvider {
   PostUploadingStatus postUploadingStatus = PostUploadingStatus.notUploading;
   List<File> uploadImages = [];
   final ImagePicker _imagePicker = ImagePicker();
   final ApiServices _apiServices = ApiServices();
-
   List<String> captionKeywords = [
     'flutter',
     'programming',

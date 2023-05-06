@@ -1,12 +1,10 @@
 import 'package:coders_arena/constants/color_constants.dart';
 import 'package:coders_arena/controller/user_controller.dart';
-import 'package:coders_arena/model/search_users_model.dart';
 import 'package:coders_arena/utils/case_converter.dart';
 import 'package:coders_arena/utils/device_size.dart';
 import 'package:coders_arena/utils/shimmer.dart';
 import 'package:coders_arena/utils/space_provider.dart';
 import 'package:coders_arena/view/common_ui/user_details_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,14 +17,25 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final Shimmer shimmer = Shimmer();
+  final SpaceProvider spaceProvider = SpaceProvider();
+  final TextEditingController searchQuery = TextEditingController();
+  bool shouldEmpty = true;
+
+  @override
+  void dispose() {
+    searchQuery.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Shimmer shimmer = Shimmer();
-    final SpaceProvider spaceProvider = SpaceProvider();
-    final TextEditingController searchQuery = TextEditingController();
 
     return Consumer<UserController>(
       builder: (context, userController, child) {
+        if(shouldEmpty) {
+          userController.queryRes.clear();
+        }
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
@@ -50,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
               TextFormField(
                 onChanged: (value) {
                   debugPrint('Trying to call');
+                  shouldEmpty = false;
                   userController.searchUser(value.toLowerCase());
                 },
                 style: TextStyle(
@@ -60,6 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 controller: searchQuery,
                 cursorColor: darkBlueColor,
                 keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   // focusColor: Colors.white,
@@ -128,6 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 onTap: () {
                                   if (userController.user!.userId !=
                                       userController.queryRes[index].userId) {
+                                    // searchQuery.clear();
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return UserDetailsScreen(

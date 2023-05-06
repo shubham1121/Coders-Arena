@@ -21,107 +21,109 @@ class FeedScreen extends StatelessWidget {
     final SpaceProvider spaceProvider = SpaceProvider();
     final Shimmer shimmer = Shimmer();
     return Consumer<UserController>(
-      builder: (context,userController,child){
+      builder: (context, userController, child) {
         return Consumer<FeedScreenController>(
             builder: (context, postController, child) {
-              if (postController.postsStatus == PostsStatus.nil) {
-                postController.fetchPosts();
-              }
-              switch (postController.postsStatus) {
-                case PostsStatus.nil:
-                  return Center(
-                    child: MaterialButton(
-                      color: darkBlueColor,
-                      onPressed: () {
-                        postController.fetchPosts();
-                      },
-                      child: const Text(
-                        'Refresh Page',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
+          if (postController.postsStatus == PostsStatus.nil) {
+            postController.fetchPosts();
+          }
+          switch (postController.postsStatus) {
+            case PostsStatus.nil:
+              return Center(
+                child: MaterialButton(
+                  color: darkBlueColor,
+                  onPressed: () {
+                    postController.fetchPosts();
+                  },
+                  child: const Text(
+                    'Refresh Page',
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                  );
-                case PostsStatus.fetching:
-                  return Column(
-                    children: [
-                      const CustomisedAppBar(),
-                      Expanded(
+                  ),
+                ),
+              );
+            case PostsStatus.fetching:
+              return Column(
+                children: [
+                  const CustomisedAppBar(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return shimmer.shimmerForFeeds(spaceProvider, context);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            case PostsStatus.fetched:
+              if (postController.feedScreenPosts.isNotEmpty) {
+                Future<void> handleRefresh() async {
+                  userController.fetchFollowersAndFollowing(
+                      userController.user!.followers,
+                      userController.user!.following);
+                  await postController.fetchPosts();
+                }
+                return Column(
+                  children: [
+                    const CustomisedAppBar(),
+                    Expanded(
+                      child: RefreshIndicator(
+                        // backgroundColor: lightBlueColor,
+                        // color: darkBlueColor,
+                        onRefresh: handleRefresh,
                         child: ListView.builder(
-                          itemCount: 4,
+                          shrinkWrap: true,
+                          itemCount: postController.feedScreenPosts.length,
                           itemBuilder: (context, index) {
-                            return shimmer.shimmerForFeeds(spaceProvider, context);
+                            return Consumer<UserController>(
+                              builder: (context, userController, child) {
+                                return DesignPost(
+                                    postModel:
+                                        postController.feedScreenPosts[index],
+                                    lowDetailUser: userController.allUsers[
+                                        postController
+                                            .feedScreenPosts[index].uid]);
+                              },
+                            );
                           },
                         ),
                       ),
-                    ],
-                  );
-                case PostsStatus.fetched:
-                  if (postController.feedScreenPosts.isNotEmpty) {
-                    Future<void> handleRefresh() async {
-                      userController.fetchFollowersAndFollowing(userController.user!.followers, userController.user!.following);
-                      await postController.fetchPosts();
-                    }
-                    return Column(
-                      children: [
-                        const CustomisedAppBar(),
-                        Expanded(
-                          child: RefreshIndicator(
-                            // backgroundColor: lightBlueColor,
-                            // color: darkBlueColor,
-                            onRefresh: handleRefresh,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: postController.feedScreenPosts.length,
-                              itemBuilder: (context, index) {
-                                return Consumer<UserController>(
-                                  builder: (context, userController, child) {
-                                    return DesignPost(
-                                        postModel:
-                                        postController.feedScreenPosts[index],
-                                        lowDetailUser: userController.allUsers[
-                                        postController.feedScreenPosts[index].uid]);
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                    // }
-                  }
-                  else
-                  { Future<void> handleRefresh() async {
-                    await postController.fetchPosts();
-                  }
-                  return Column(
-                    children: [
-                      const CustomisedAppBar(),
-                      Expanded(
-                        child: RefreshIndicator(
-                          // backgroundColor: lightBlueColor,
-                          // color: darkBlueColor,
-                          onRefresh: handleRefresh,
-                          child: Center(
-                            child: Text('Nothing Here',
-                              style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
-                                    fontSize: displayWidth(context)*0.08,
-                                    color: Colors.white,
-                                  )
-                              ),
-                            ),
+                    ),
+                  ],
+                );
+                // }
+              } else {
+                Future<void> handleRefresh() async {
+                  await postController.fetchPosts();
+                }
+
+                return Column(
+                  children: [
+                    const CustomisedAppBar(),
+                    Expanded(
+                      child: RefreshIndicator(
+                        // backgroundColor: lightBlueColor,
+                        // color: darkBlueColor,
+                        onRefresh: handleRefresh,
+                        child: Center(
+                          child: Text(
+                            'Nothing Here',
+                            style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                              fontSize: displayWidth(context) * 0.08,
+                              color: Colors.white,
+                            )),
                           ),
                         ),
                       ),
-                    ],
-                  );
-                  }
-
+                    ),
+                  ],
+                );
               }
-            });
+          }
+        });
       },
     );
   }
