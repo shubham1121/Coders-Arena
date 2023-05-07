@@ -21,10 +21,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final spaceProvider = SpaceProvider();
+  final currentUser = FirebaseAuth.instance.currentUser;
+  int count = 0;
   @override
   Widget build(BuildContext context) {
-    final spaceProvider = SpaceProvider();
-    final currentUser = FirebaseAuth.instance.currentUser;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: darkBlueColor,
@@ -93,155 +95,163 @@ class _ChatScreenState extends State<ChatScreen> {
                               itemBuilder: (context, index) {
                                 String docId = snapshot.data!.docs[index].id;
                                 List<String> ids = docId.split('_');
-                                ids.remove(currentUser!.uid);
-                                String recipientId = ids[0];
-                                debugPrint(recipientId);
-                                LowDetailUser recipientUser =
-                                    controller.allUsers[recipientId]!;
-                                List<String> initials =
-                                    upperCaseConverter(recipientUser.name);
-                                String uName = '';
-                                for (int i = 0; i < initials.length; i++) {
-                                  if (i == initials.length - 1) {
-                                    uName = '$uName${initials[i]}';
-                                  } else {
-                                    uName = '$uName${initials[i]} ';
+                                // ids.remove(currentUser!.uid);
+                                if(ids.contains(currentUser!.uid)){
+                                  ids.remove(currentUser!.uid);
+                                  String recipientId = ids[0];
+                                  debugPrint(docId);
+                                  debugPrint(recipientId);
+                                  debugPrint(currentUser!.uid);
+                                  LowDetailUser recipientUser =
+                                  controller.allUsers[recipientId]!;
+                                  List<String> initials =
+                                  upperCaseConverter(recipientUser.name);
+                                  String uName = '';
+                                  for (int i = 0; i < initials.length; i++) {
+                                    if (i == initials.length - 1) {
+                                      uName = '$uName${initials[i]}';
+                                    } else {
+                                      uName = '$uName${initials[i]} ';
+                                    }
                                   }
-                                }
-                                // debugPrint(recipient.name);
-                                return Padding(
-                                  padding: index == 0
-                                      ? const EdgeInsets.fromLTRB(0, 10, 0, 0)
-                                      : const EdgeInsets.symmetric(
-                                          horizontal: 0, vertical: 0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MessageScreen(
-                                                    recieverId:
-                                                        recipientUser.userId,
-                                                    senderId: currentUser.uid,
-                                                  )));
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 0),
-                                          child: Row(
-                                            children: [
-                                              recipientUser.dp.isEmpty
-                                                  ? CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.pinkAccent,
-                                                      radius: 19,
-                                                      child: Center(
-                                                        child: initials.length >
-                                                                1
-                                                            ? Text(
-                                                                "${initials[0][0]}.${initials[initials.length - 1][0]}"
-                                                                    .toUpperCase(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        displayWidth(context) *
-                                                                            0.045,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    color: Colors
-                                                                        .white),
-                                                              )
-                                                            : Text(
-                                                                initials[0][0],
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        displayWidth(context) *
-                                                                            0.11,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                      ),
+                                  count++;
+                                  return Padding(
+                                    padding: (index == 0 || count==1)
+                                        ? const EdgeInsets.fromLTRB(0, 10, 0, 0)
+                                        : const EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MessageScreen(
+                                                      recieverId:
+                                                      recipientUser.userId,
+                                                      senderId: currentUser!.uid,
+                                                    )));
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 0),
+                                            child: Row(
+                                              children: [
+                                                recipientUser.dp.isEmpty
+                                                    ? CircleAvatar(
+                                                  backgroundColor:
+                                                  Colors.pinkAccent,
+                                                  radius: 19,
+                                                  child: Center(
+                                                    child: initials.length >
+                                                        1
+                                                        ? Text(
+                                                      "${initials[0][0]}.${initials[initials.length - 1][0]}"
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                          displayWidth(context) *
+                                                              0.045,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w400,
+                                                          color: Colors
+                                                              .white),
                                                     )
-                                                  : CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      radius: 20,
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(50),
-                                                          border: Border.all(
-                                                            color:
-                                                                darkBlueColor,
-                                                            width: displayWidth(
-                                                                    context) *
-                                                                0.003,
-                                                          ),
+                                                        : Text(
+                                                      initials[0][0],
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                          displayWidth(context) *
+                                                              0.11,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w400,
+                                                          color: Colors
+                                                              .white),
+                                                    ),
+                                                  ),
+                                                )
+                                                    : CircleAvatar(
+                                                  backgroundColor:
+                                                  Colors.transparent,
+                                                  radius: 20,
+                                                  child: Container(
+                                                    decoration:
+                                                    BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(50),
+                                                      border: Border.all(
+                                                        color:
+                                                        darkBlueColor,
+                                                        width: displayWidth(
+                                                            context) *
+                                                            0.003,
+                                                      ),
+                                                    ),
+                                                    child: Container(
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            50),
+                                                        border: Border.all(
+                                                          color:
+                                                          Colors.white,
+                                                          width: displayWidth(
+                                                              context) *
+                                                              0.003,
                                                         ),
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50),
-                                                            border: Border.all(
-                                                              color:
-                                                                  Colors.white,
-                                                              width: displayWidth(
-                                                                      context) *
-                                                                  0.003,
-                                                            ),
-                                                          ),
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              imageUrl:
-                                                                  recipientUser
-                                                                      .dp,
-                                                              placeholder: (context,
-                                                                      url) =>
-                                                                  const CircularProgressIndicator(),
-                                                            ),
-                                                          ),
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            20),
+                                                        child:
+                                                        CachedNetworkImage(
+                                                          imageUrl:
+                                                          recipientUser
+                                                              .dp,
+                                                          placeholder: (context,
+                                                              url) =>
+                                                          const CircularProgressIndicator(),
                                                         ),
                                                       ),
                                                     ),
-                                              spaceProvider.getWidthSpace(
-                                                  context, 0.04),
-                                              Text(
-                                                uName,
-                                                style: GoogleFonts.nunito(
-                                                  textStyle: TextStyle(
-                                                    fontSize:
-                                                        displayWidth(context) *
-                                                            0.04,
-                                                    color: Colors.white,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                spaceProvider.getWidthSpace(
+                                                    context, 0.04),
+                                                Text(
+                                                  uName,
+                                                  style: GoogleFonts.nunito(
+                                                    textStyle: TextStyle(
+                                                      fontSize:
+                                                      displayWidth(context) *
+                                                          0.04,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Divider(
-                                          color: Colors.grey.shade800,
-                                          thickness: 1,
-                                        )
-                                      ],
+                                          Divider(
+                                            color: Colors.grey.shade800,
+                                            thickness: 1,
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
+                                return Container();
+                                // debugPrint(recipient.name);
+
                               }),
                         );
                       }
